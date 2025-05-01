@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceans | Cadastro</title>
+</head>
+
+<body>
+
+    <!-- Parte do formulario onde vou colocar os inputs-->
+    <div class="formulario">
+        <div class="inputs">
+
+            <div class="campo">
+                <span>Nome:</span>
+                <input type="text" id="input_nome" placeholder="Ex: Guilherme...">
+            </div>
+
+            <div class="campo">
+                <span>Email:</span>
+                <input type="text" id="input_email" placeholder="Ex:Fulano@sptech.com">
+            </div>
+
+            <div class="campo">
+                <span>Senha:</span>
+                <input type="password" id="input_senha" placeholder="*********">
+            </div>
+
+            <div class="campo">
+                <span>Confirme a senha:</span>
+                <input type="password" id="input_confirmacao">
+            </div>
+        </div>
+
+        <button onclick="cadastrar()">Cadastrar-se</button>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    function cadastrar() {
+
+        var nomeVar = input_nome.value;
+        var emailVar = input_email.value;
+        var senhaVar = input_senha.value;
+        var confrimacaoSenha = input_confirmacao.value;
+
+
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+        })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                finalizarAguardar();
+            })
+        return false;
+    }
+</script>
