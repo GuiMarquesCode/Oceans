@@ -8,6 +8,9 @@ rota.post("/cadastrar", function(req,res){
     userController.cadastrar(req,res);
 })
 
+rota.post("/autenticar", function (req, res) {
+    userController.autenticar(req, res);
+});
 
 
 
