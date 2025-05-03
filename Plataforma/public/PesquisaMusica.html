@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Artista</title>
+   <script src="js/CORS.js"></script>
+</head>
+<body>
+    
+    <input type="text" id="input_pesquisa" >
+    <button onclick="chamarAPI()">Pesquisar</button>
+    <br><br>
+    <div id="div_mensagem">
+        
+    </div>
+
+   
+</body>
+</html>
+
+<script>
+
+
+var musica = input_pesquisa.value;
+
+
+const urlPesquisa = `https://api.deezer.com/search?q=${musica}`;
+
+
+/*     Variaveis da música */
+var Preview_Musica = '';
+var Titulo = '';
+var idMusica = 0
+
+    /* Variaveis do artista */
+var idArtista = 0;
+var Nome_artista = '';
+var Foto_artista = '';
+
+/*     Variaveis do album */
+var Titulo_Album = '';
+var Data_Lancamento = '';
+var Foto_Album = '';
+var idAlbum = 0;
+
+
+async function chamarAPI() {
+
+    const resp = await fetch(urlPesquisa);
+
+    if (resp.ok) {
+
+
+        const obj = await resp.json();
+
+
+        idMusica = parseInt(obj.data[0].id);
+
+        const urlMusica = `https://api.deezer.com/track/${idMusica}`;
+
+        const respMusic = await fetch(urlMusica);
+
+        if (respMusic.ok) {
+
+            const infoMusica = await respMusic.json();
+
+            console.log(infoMusica)
+
+            /* Coletando info da musica */
+            Preview_Musica = infoMusica.preview;
+            Titulo = infoMusica.title;
+            
+
+
+            /* Coletando info do artista */
+            idArtista = infoMusica.artist.id;
+            Nome_artista = infoMusica.artist.name;
+            Foto_artista = infoMusica.artist.picture_big;
+
+
+                /* Coletando info Album */
+            
+            Titulo_Album = infoMusica.album.title;
+            Data_Lancamento = infoMusica.album.release_date;
+            Foto_Album = infoMusica.album.cover_big;
+            idAlbum = infoMusica.album.id;
+
+           console.log(Preview_Musica, Titulo, idMusica, idArtista, Nome_artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum);
+            div_mensagem.innerHTML = 
+            `                             
+            <h1>${Titulo} - ${Nome_artista}</h1>
+        <br>
+        <h4>${Titulo_Album} - ${Data_Lancamento}</h4>
+        <br>
+        <img src="${Foto_Album}" height="200px">
+        <img src="${Foto_artista}" height="200px"
+        >
+        <br>
+        <audio controls>
+            <source src="${Preview_Musica}" type="audio/mpeg">
+            Seu navegador não suporta o elemento de áudio.
+          </audio>
+          
+            `;
+        } else {
+            console.error('Erro ao achar a música')
+        }
+
+
+
+    } else {
+
+        console.log('Erro na API')
+    }
+
+
+
+
+}
+
+
+
+</script>

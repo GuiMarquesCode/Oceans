@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceans | Cadastro</title>
+</head>
+
+<body>
+
+    <!-- Parte do formulario onde vou colocar os inputs-->
+    <div class="formulario">
+        <div class="inputs">
+
+            <div class="campo">
+                <span>Nome:</span>
+                <input type="text" id="input_nome" placeholder="Ex: Guilherme...">
+            </div>
+
+            <div class="campo">
+                <span>Email:</span>
+                <input type="text" id="input_email" placeholder="Ex:Fulano@sptech.com">
+            </div>
+
+            <div class="campo">
+                <span>Senha:</span>
+                <input type="password" id="input_senha" placeholder="*********">
+                <p style="cursor: pointer;" onclick="verSenha()">👁️</p>
+            </div>
+        </div>
+
+        <button onclick="Confirm()">Atualizar</button>
+
+        <div id="div_confirmacao" class="confirmacao">
+            <h1>Tem certeza que quer fazer isso?</h1>
+            <br>
+            <button onclick="atualizar()">Sim</button>
+            <button onclick="fechar()">Não</button>
+        </div>
+    </div>
+
+    <br><br>
+    <button onclick="abrirDel()">Excluir Minha Conta</button>
+
+    <div id="excluir_conta">
+        <h1>Deseja excluir sua conta?</h1>
+        <br>
+        <button onclick="ConfirmDel()">Sim</button>
+        <button onclick="fechaDelr()">Não</button>
+
+    </div>
+
+    <div id="autenticar_excluir">
+        <h1>Digite sua senha para confirmar a exclusão da conta</h1>
+        <input type="text" id="input_senha_excluir">
+        <br>
+        <br>
+        <button onclick="Deletar()">Confirmar</button>
+        <button onclick="fechaDelr()">Cancelar</button>
+        <br>
+        <div id="error_mensagem"></div>
+    </div>
+    <br>
+    <br>
+    <a href="perfil.html">Voltar ao perfil</a>
+</body>
+
+</html>
+
+<script>
+
+    excluir_conta.style.display = "none";
+    autenticar_excluir.style.display = "none";
+
+
+    input_nome.value = sessionStorage.NOME_USUARIO;
+    input_email.value = sessionStorage.EMAIL_USUARIO;
+    input_senha.value = sessionStorage.Senha_USUARIO;
+
+    div_confirmacao.style.display = "none";
+    function Confirm() {
+        div_confirmacao.style.display = "block";
+    }
+    function fechar() {
+        div_confirmacao.style.display = "none";
+    }
+
+    function verSenha() {
+        if (input_senha.type == "password") {
+            input_senha.type = "text";
+        } else {
+            input_senha.type = "password";
+        }
+    }
+    function atualizar() {
+
+
+        var nomeVar = input_nome.value;
+        var emailVar = input_email.value;
+        var senhaVar = input_senha.value;
+
+
+
+        fetch("/usuarios/atualizar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                idUserServer: sessionStorage.ID_USUARIO
+            })
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                setTimeout(() => {
+
+                    console.log("Atualizado com sucesso!");
+                    sessionStorage.EMAIL_USUARIO = emailVar;
+                    console.log("EMAIL: " + sessionStorage.EMAIL_USUARIO);
+                    sessionStorage.NOME_USUARIO = nomeVar;
+                    console.log("NOME: " + sessionStorage.NOME_USUARIO);
+                    sessionStorage.Senha_USUARIO = senhaVar;
+                    console.log("Senha: " + sessionStorage.Senha_USUARIO);
+                    window.location = "perfil.html";
+                }, "2000");
+
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+
+            })
+        return false;
+    }
+
+    function abrirDel() {
+        excluir_conta.style.display = "block";
+    }
+    function fechaDelr() {
+        excluir_conta.style.display = "none";
+        autenticar_excluir.style.display = "none";
+    }
+    function ConfirmDel() {
+        autenticar_excluir.style.display = "block";
+    }
+
+
+    function Deletar() {
+        if (input_senha_excluir.value == sessionStorage.Senha_USUARIO) {
+            fetch("/usuarios/deletar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idUserServer: sessionStorage.ID_USUARIO
+                })
+            }).then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    setTimeout(() => {
+
+                        console.log("Deletado com sucesso!");
+                        sessionStorage.clear();
+                        window.location = "login.html";
+                    }, "1000");
+
+                } else {
+                    error_mensagem.innerHTML = "<h1>Senha incorreta</h1>";
+                    throw "Houve um erro ao tentar deletar o cadastro!";
+                }
+            })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+
+                })
+            return false;
+
+        }
+    }
+
+</script>

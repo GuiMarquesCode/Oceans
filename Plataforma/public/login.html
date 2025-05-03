@@ -22,6 +22,10 @@
 
         </div>
         <button onclick="entrar()">Entrar</button>
+        <br>
+        <br>
+
+        <a href="cadastro.html">Não tem cadastro?Faça agora!</a>
     </div>
 </body>
 </html>
@@ -53,7 +57,7 @@ function entrar() {
             },
             body: JSON.stringify({
                 emailServer: emailVar,
-                senhaServer: senhaVar
+                senhaServer: senhaVar,
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -66,8 +70,12 @@ function entrar() {
                     console.log(JSON.stringify(json));
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.Senha_USUARIO = json.senha;
+                    sessionStorage.ID_USUARIO = json.idUsuario;
                     console.log("EMAIL: " + sessionStorage.EMAIL_USUARIO);
                     console.log("NOME: " + sessionStorage.NOME_USUARIO);
+                    console.log("idUser: " + sessionStorage.ID_USUARIO);
+                    console.log("Senha: " + sessionStorage.Senha_USUARIO);
                     console.log("Login realizado com sucesso!");
                     window.location = "./perfil.html";  
                 

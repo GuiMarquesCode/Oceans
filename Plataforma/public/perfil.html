@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
 
     <div>
         <h1>Olá <span id="b_usuario"></span> portador do email <span id="e_usuario"></span></h1>
     </div>
+
+    <button onclick="sair()">Sair</button>
+
+    <br><br>
+
+    <button onclick="redirecionarMusic()">Fazer cadastro de música</button>
+    <br>
+    <br>
+    <a href="update.html">Atualizar registro</a>
+
 </body>
+
 </html>
 
 <script>
 
-b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-e_usuario.innerHTML = sessionStorage.EMAIL_USUARIO;
+    b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+    e_usuario.innerHTML = sessionStorage.EMAIL_USUARIO;
+
+    console.log("EMAIL: " + sessionStorage.EMAIL_USUARIO);
+    console.log("NOME: " + sessionStorage.NOME_USUARIO);
+    console.log("idUser: " + sessionStorage.ID_USUARIO);
+
+
+    function sair() {
+        sessionStorage.clear();
+        window.location.href = "./login.html";
+    }
+
+    function redirecionarMusic(){
+        window.location.href = "./cadMusica.html";
+    }
 
 </script>
