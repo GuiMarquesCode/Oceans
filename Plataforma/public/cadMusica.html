@@ -1,59 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Cadastrar Música</title>
 </head>
+
 <body>
+    <input type="text" id="input_pesquisa" placeholder="Digite o nome da música">
+    <button onclick="chamarAPI()">Pesquisar</button>
+    <br><br><br><br>
     <div class="formulario_musica">
 
-        <div id="inputs">
-            
-            <div class="campo">
-                <span>Artista:</span>
-                <input type="text" id="input_artista" placeholder="Ex: Ed Sheran" oninput="dadoArtista()">
-            </div>
-            <div class="campo">
-                <span>Nome da Música:</span>
-                <input type="text" id="input_nomeMusica" placeholder="Ex: A música que não toca" oninput="dadoMusica()">
-            </div>
+        <div id="info_musica">
 
+        </div>
+
+        <div id="inputs">
+
+
+            <div class="campo">
+                <span>Sentimento:</span>
+                <input type="text" id="input_sentimento" placeholder="Ex: A música que não toca">
+            </div>
+            <br><br>
             <div class="campo">
                 <span>Historia:</span>
                 <textarea id="input_historia"></textarea>
 
             </div>
+            <br><br>
+            <div id="img_album"></div>
+            <br><br>
         </div>
 
         <button onclick="cadastrarMusica()">Cadastrar Música</button>
+        <br>
+        <br>
 
         <a href="PesquisaMusica.html">Pesquisar Musica</a>
     </div>
 </body>
+
 </html>
 
 <script>
 
+    var Preview_Musica = '';
+    var Titulo = '';
+    var idMusica = 0
 
-    var artista = '';
-    var musica = '';
+    /* Variaveis do artista */
+    var idArtista = 0;
+    var Nome_artista = '';
+    var Foto_artista = '';
 
-    function dadoArtista(){
-        var artista = input_artista.value;
+    /*     Variaveis do album */
+    var Titulo_Album = '';
+    var Data_Lancamento = '';
+    var Foto_Album = '';
+    var idAlbum = 0;
 
-        
+
+    async function chamarAPI() {
 
 
-            
+
+        var musica = input_pesquisa.value;
+
+        const urlPesquisa = `/musica/pesquisar?q=${encodeURIComponent(musica)}`;
+
+        const resp = await fetch(urlPesquisa);
+
+        if (resp.ok) {
+
+
+            const obj = await resp.json();
+
+
+            idMusica = parseInt(obj.data[0].id);
+
+            const urlMusica = `/musica/pesquisar2/${encodeURIComponent(idMusica)}`;
+
+
+            const respMusic = await fetch(urlMusica);
+
+            if (respMusic.ok) {
+
+                const infoMusica = await respMusic.json();
+
+                console.log(infoMusica)
+
+                /* Coletando info da musica */
+                Preview_Musica = infoMusica.preview;
+                Titulo = infoMusica.title;
+
+
+
+                /* Coletando info do artista */
+                idArtista = infoMusica.artist.id;
+                Nome_artista = infoMusica.artist.name;
+                Foto_artista = infoMusica.artist.picture_big;
+
+
+                /* Coletando info Album */
+
+                Titulo_Album = infoMusica.album.title;
+                Data_Lancamento = infoMusica.album.release_date;
+                Foto_Album = infoMusica.album.cover_big;
+                idAlbum = infoMusica.album.id;
+
+                info_musica.innerHTML = `<h4>${Titulo} - ${Nome_artista}</h4>`;
+                
+
+                img_album.innerHTML = `<img src="${Foto_Album}" alt="Album" width="200px" height="200px"><br> <h4>${Titulo_Album} - ${Data_Lancamento} </h4> <br><br> <audio id="audioPreview" autoplay >
+                <source src="${Preview_Musica}" type="audio/mpeg">
+            Seu navegador não suporta o elemento de áudio.</audio>`;
+                console.log(Preview_Musica, Titulo, idMusica, idArtista, Nome_artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum);
+
+            } else {
+                console.error('Erro ao achar a música')
+            }
+
+            setTimeout(() => {
+        const audio = document.getElementById('audioPreview');
+        if (audio) {
+            audio.volume = 0.2;
+            audio.play(); // tocar com som (somente após interação)
+        }
+    }, 500);
+
+        } else {
+
+            console.log('Erro na API')
+        }
+
+
+
+
     }
 
-    function dadoMusica(){
 
-    }
-    
-    function cadastrarMusica(){
+    function Cadastrar(){
 
+        var sentimento = input_sentimento.value;
+        var historia = input_historia.value;
+
+        fetch("/musica/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                sentimentoServer: sentimento,
+                historiaServer: historia,
+                idMusicaServer: idMusica,
+                tituloServer : Titulo,
+                Preview_MusicaServer: Preview_Musica,
+                idArtistaServer: idArtista,
+                Nome_artistaServer: Nome_artista,
+                Foto_artistaServer: Foto_artista,
+                Titulo_AlbumServer: Titulo_Album,
+                Data_LancamentoServer: Data_Lancamento,
+                Foto_AlbumServer: Foto_Album,
+                idAlbumServer: idAlbum,
+                idUserServer: sessionStorage.ID_USUARIO
+            })
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                setTimeout(() => {
+                    window.location = "PesquisaMusica.html";
+                }, "2000");
+
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        });
+        return false;
     }
 
 </script>

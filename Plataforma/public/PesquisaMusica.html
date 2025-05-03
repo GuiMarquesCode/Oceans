@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta Artista</title>
-   <script src="js/CORS.js"></script>
+  
 </head>
 <body>
     
     <input type="text" id="input_pesquisa" >
     <button onclick="chamarAPI()">Pesquisar</button>
     <br><br>
+   
     <div id="div_mensagem">
         
     </div>
@@ -22,11 +23,10 @@
 <script>
 
 
-var musica = input_pesquisa.value;
-
-
-const urlPesquisa = `https://api.deezer.com/search?q=${musica}`;
-
+    
+    
+    
+    
 
 /*     Variaveis da música */
 var Preview_Musica = '';
@@ -46,6 +46,10 @@ var idAlbum = 0;
 
 
 async function chamarAPI() {
+    
+    var musica = input_pesquisa.value;
+
+    const urlPesquisa = `/musica/pesquisar?q=${encodeURIComponent(musica)}`;
 
     const resp = await fetch(urlPesquisa);
 
@@ -57,7 +61,8 @@ async function chamarAPI() {
 
         idMusica = parseInt(obj.data[0].id);
 
-        const urlMusica = `https://api.deezer.com/track/${idMusica}`;
+        const urlMusica = `/musica/pesquisar2/${encodeURIComponent(idMusica)}`;
+
 
         const respMusic = await fetch(urlMusica);
 
@@ -98,7 +103,7 @@ async function chamarAPI() {
         >
         <br>
         <audio controls>
-            <source src="${Preview_Musica}" type="audio/mpeg">
+            <source src="${Preview_Musica}" type="audio/mpeg" >
             Seu navegador não suporta o elemento de áudio.
           </audio>
           

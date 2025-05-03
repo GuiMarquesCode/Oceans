@@ -1,20 +1,50 @@
 var usuarioModel = require("../models/musicModels");
 
-
-
 function cadastrar(req, res) {
-    var artista = req.body.artista;
- 
-    if (nome == undefined) {
-        res.status(400).send("Seu nome está undefined!");
-    } else if (email == undefined) {
-        res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
-        res.status(400).send("Sua senha está undefined!");
-    } else {
+    var sentimento = req.body.sentimentoServer;
+    var historia = req.body.historiaServer;
+    var idMusica = req.body.idMusicaServer;
+    var idArtista = req.body.idArtistaServer;
+    var artista = req.body.Nome_artistaServer;
+    var Titulo =req.bodytituloServer
+    var Preview=req.bodyPreview_MusicaServer
+    var Foto_artista = req.body.Foto_artistaServer;
+    var Titulo_Album = req.body.Titulo_AlbumServer;
+    var Data_Lancamento = req.body.Data_LancamentoServer;
+    var Foto_Album = req.body.Foto_AlbumServer;
+    var idAlbum = req.body.idAlbumServer;
+    var idUser = req.body.idUserServer;
 
-
-        usuarioModel.cadastrar(nome, email,senha)
+    if (sentimento == undefined) {
+        res.status(400).send("O sentimento está undefined!");
+    } else if (historia == undefined) {
+        res.status(400).send("A história está undefined!");
+    } else if (idMusica == undefined) {
+        res.status(400).send("O ID da música está undefined!");
+    } else if (idArtista == undefined) {
+        res.status(400).send("O ID do artista está undefined!");
+    } else if (artista == undefined) {
+        res.status(400).send("O nome do artista está undefined!");
+    } else if (Foto_artista == undefined) {
+        res.status(400).send("A foto do artista está undefined!");
+    } else if (Titulo_Album == undefined) {
+        res.status(400).send("O título do álbum está undefined!");
+    } else if (Data_Lancamento == undefined) {
+        res.status(400).send("A data de lançamento está undefined!");
+    } else if (Foto_Album == undefined) {
+        res.status(400).send("A foto do álbum está undefined!");
+    } else if (idAlbum == undefined) {
+        res.status(400).send("O ID do álbum está undefined!");
+    } else if (idUser == undefined) {
+        res.status(400).send("O ID do usuário está undefined!");
+    } else if( Titulo == undefined){
+        res.status(400).send("O Titulo está undefined!");
+    }
+    else if( Preview == undefined){
+        res.status(400).send("O Preview está undefined!");
+    }
+    else{
+        musicModel.cadastrar(sentimento, historia, idMusica, idArtista, artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum, idUser , Titulo, Preview)
             .then(
                 function (resultado) {
                     res.json(resultado);
