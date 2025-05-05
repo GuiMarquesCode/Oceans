@@ -1,36 +1,37 @@
 CREATE DATABASE Oceans;
 use Oceans;
-
+drop database Oceans;
 
 
 CREATE TABLE Usuario
 (
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(70),
-    Email VARCHAR(50),
+    Nome VARCHAR(130),
+    Email VARCHAR(70),
     Senha VARCHAR(45)
 );
 
 CREATE TABLE Musica (
 	idMusica BIGINT PRIMARY KEY,
-    Titulo VARCHAR(45),
+    Titulo VARCHAR(150),
     preview TEXT
 );
 
 CREATE TABLE Artista(
 	idArtista BIGINT PRIMARY KEY, 
-    Nome VARCHAR(45),
+    Nome VARCHAR(130),
     Foto VARCHAR(255)
 );
 
 CREATE TABLE Album(
+	idIdentificador INT AUTO_INCREMENT,
 	idAlbum BIGINT,
     FkArtista BIGINT,
     FkMusica BIGINT,
-    Titulo_Album VARCHAR(45),
+    Titulo_Album VARCHAR(150),
     Data_Lancamento DATE,
     Foto VARCHAR(255),
-    CONSTRAINT PkCompostaAlbum PRIMARY KEY (idAlbum, FkArtista, FkMusica),
+    CONSTRAINT PkCompostaAlbum PRIMARY KEY (idIdentificador ,FkArtista, FkMusica),
     CONSTRAINT ConstFkArtista FOREIGN KEY (FkArtista) REFERENCES Artista(idArtista),
     CONSTRAINT ConstFkMusicaAlbum FOREIGN KEY (FkMusica) REFERENCES Musica(idMusica)
 );
@@ -75,5 +76,12 @@ INSERT INTO Postagem VALUES
 SELECT Musica.Titulo as Titulo, Album.Titulo_Album as Nome_Album, Album.Data_lancamento as Lancamento, Artista.Nome as Artista 
 FROM Musica JOIN Album ON Album.FkMusica = Musica.idMusica JOIN Artista ON Album.FkArtista = Artista.idArtista;
 
-SELECT Usuario.Nome as Usuario, Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia, Musica.Titulo AS Musica
-FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica;
+SELECT Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia, Musica.Titulo AS Musica , Album.foto as Foto, Musica.Preview
+FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
+JOIN Album ON Album.FkMusica = Musica.idMusica WHERE Usuario.idUsuario = 4;
+
+	
+-- Feed
+SELECT Usuario.idUsuario as ID,Usuario.Nome as Nome, Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia, Postagem.DataPostagem as Data,Musica.Titulo AS Musica , Album.foto as Foto, Musica.Preview
+FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
+JOIN Album ON Album.FkMusica = Musica.idMusica WHERE Usuario.idUsuario ORDER BY Postagem.DataPostagem;

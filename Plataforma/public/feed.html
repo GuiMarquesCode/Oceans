@@ -5,44 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="postagensGerais()">
+    <a href="perfil.html">Perfil</a>
+
+    <br><br>
+
     Feed:   
 
     <br><br>
 
+    <input type="text" placeholder="Pesquise um artista">
+
     <div id="div_postagem_geral">
 
     </div>
+    <br><br>
+    <button onclick="aumentar_limite()" id="button_Ver_Mais">Ver mais</button>
 </body>
 </html>
 
 <script>
 
+var limite_post = 1;
+var tamanho_post = 0;
+function aumentar_limite(){
+    if(limite_post <= tamanho_post){
+        limite_post += 2;
+        postagensGerais();
+    }else{
+        button_Ver_Mais.style.display = 'none';
+    }
+}
+
+
+
+
+
+
 async function postagensGerais() {
         
         var mensagem = "";
-        const resp = await fetch(`/musica/postagens_gerais/`);
+        const resp = await fetch(`/interaction/postagens_gerais/`);
 
         if (resp.ok) {
 
             const postagens_gerais = await resp.json();
-
-
+            tamanho_post =postagens_gerais.length;
+            
             console.log(postagens_gerais);
 
-            postagens_gerais.forEach(element => {
+            for(i = 0 ; i <= limite_post; i++){
                 mensagem += `
-                    <h1>${element.Sentimento}</h1>
-                    <p>${element.Historia}</p>
-                    <img src= "${element.Foto}" width = "60px"
+                    <h4>${postagens_gerais[i].Nome} - ${postagens_gerais[i].Data}</h4>
+                    <p>${postagens_gerais[i].Historia}</p>
+                    <img src= "${postagens_gerais[i].Foto}" width = "60px"
                     <br>
                      <audio id="audioPreview"  controls>
-                     <source src="${element.Preview}" type="audio/mpeg">
+                     <source src="${postagens_gerais[i].Preview}" type="audio/mpeg">
                     Seu navegador não suporta o elemento de áudio.</audio>
+                 
+                    <br>
+                    <br>
                     <br>
                     <br>
                 `;
-            });
+            };
 
             div_postagem_geral.innerHTML = mensagem;
 
@@ -52,6 +79,6 @@ async function postagensGerais() {
 
 
     }
-    postagensGerais();
+    
 
 </script>
