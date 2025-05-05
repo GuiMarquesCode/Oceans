@@ -35,6 +35,7 @@ function cadastrar(nome, email, senha){
 }
 
 
+
 module.exports = {
     deletar,
     atualizar,

@@ -35,11 +35,11 @@
             <br><br>
         </div>
 
-        <button onclick="cadastrarMusica()">Cadastrar Música</button>
+        <button onclick="cadastrar()">Cadastrar Música</button>
         <br>
         <br>
 
-        <a href="PesquisaMusica.html">Pesquisar Musica</a>
+        <a href="index.html">Voltar ao menu</a>
     </div>
 </body>
 
@@ -62,6 +62,8 @@
     var Foto_Album = '';
     var idAlbum = 0;
 
+    /* Variavel do usuario logado */
+    var idUser = parseInt(sessionStorage.ID_USUARIO);
 
     async function chamarAPI() {
 
@@ -112,7 +114,7 @@
                 idAlbum = infoMusica.album.id;
 
                 info_musica.innerHTML = `<h4>${Titulo} - ${Nome_artista}</h4>`;
-                
+
 
                 img_album.innerHTML = `<img src="${Foto_Album}" alt="Album" width="200px" height="200px"><br> <h4>${Titulo_Album} - ${Data_Lancamento} </h4> <br><br> <audio id="audioPreview" autoplay >
                 <source src="${Preview_Musica}" type="audio/mpeg">
@@ -123,13 +125,6 @@
                 console.error('Erro ao achar a música')
             }
 
-            setTimeout(() => {
-        const audio = document.getElementById('audioPreview');
-        if (audio) {
-            audio.volume = 0.2;
-            audio.play(); // tocar com som (somente após interação)
-        }
-    }, 500);
 
         } else {
 
@@ -142,10 +137,25 @@
     }
 
 
-    function Cadastrar(){
+    function cadastrar() {
 
         var sentimento = input_sentimento.value;
         var historia = input_historia.value;
+        console.log({
+            sentimento,
+            historia,
+            idMusica,
+            Titulo,
+            Preview_Musica,
+            idArtista,
+            Nome_artista,
+            Foto_artista,
+            Titulo_Album,
+            Data_Lancamento,
+            Foto_Album,
+            idAlbum,
+            idUser
+        });
 
         fetch("/musica/cadastrar", {
             method: "POST",
@@ -156,7 +166,7 @@
                 sentimentoServer: sentimento,
                 historiaServer: historia,
                 idMusicaServer: idMusica,
-                tituloServer : Titulo,
+                tituloServer: Titulo,
                 Preview_MusicaServer: Preview_Musica,
                 idArtistaServer: idArtista,
                 Nome_artistaServer: Nome_artista,
@@ -165,7 +175,7 @@
                 Data_LancamentoServer: Data_Lancamento,
                 Foto_AlbumServer: Foto_Album,
                 idAlbumServer: idAlbum,
-                idUserServer: sessionStorage.ID_USUARIO
+                idUserServer: idUser
             })
         }).then(function (resposta) {
             console.log("resposta: ", resposta);

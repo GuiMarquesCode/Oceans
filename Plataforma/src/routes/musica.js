@@ -34,5 +34,12 @@ rota.get('/pesquisar2/:id', async (req, res) => {
     }
 });
 
+rota.get('/postagens/:idusuario', function (req, res) {
+    musicController.postagens(req, res);
+});
+
+rota.get('/postagens_gerais', function (res) {
+    musicController.postagens(res);
+});
 
 module.exports = rota;

@@ -1,6 +1,8 @@
 CREATE DATABASE Oceans;
 use Oceans;
 
+
+
 CREATE TABLE Usuario
 (
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,27 +12,24 @@ CREATE TABLE Usuario
 );
 
 CREATE TABLE Musica (
-	idMusica INT PRIMARY KEY AUTO_INCREMENT,
+	idMusica BIGINT PRIMARY KEY,
     Titulo VARCHAR(45),
-    idDeezer INT,
     preview TEXT
 );
 
 CREATE TABLE Artista(
-	idArtista INT PRIMARY KEY AUTO_INCREMENT, 
+	idArtista BIGINT PRIMARY KEY, 
     Nome VARCHAR(45),
-    Foto VARCHAR(255),
-    idDeezer INT
+    Foto VARCHAR(255)
 );
 
 CREATE TABLE Album(
-	idAlbum INT AUTO_INCREMENT,
-    FkArtista INT,
-    FkMusica INT,
+	idAlbum BIGINT,
+    FkArtista BIGINT,
+    FkMusica BIGINT,
     Titulo_Album VARCHAR(45),
-    Data_Lancamento CHAR(10),
+    Data_Lancamento DATE,
     Foto VARCHAR(255),
-    idDeezer INT,
     CONSTRAINT PkCompostaAlbum PRIMARY KEY (idAlbum, FkArtista, FkMusica),
     CONSTRAINT ConstFkArtista FOREIGN KEY (FkArtista) REFERENCES Artista(idArtista),
     CONSTRAINT ConstFkMusicaAlbum FOREIGN KEY (FkMusica) REFERENCES Musica(idMusica)
@@ -42,12 +41,39 @@ CREATE TABLE Postagem(
 	HISTORIA TEXT,
     DataPostagem DATETIME DEFAULT CURRENT_TIMESTAMP(),
     FkUsuario INT,
-    FkMusica INT,
+    FkMusica BIGINT,
     CONSTRAINT PkComposta PRIMARY KEY(idPostagem, FkUsuario,FkMusica),
     CONSTRAINT ConstFkMusica FOREIGN KEY (FkMusica) REFERENCES Musica(idMusica),
     CONSTRAINT ConstFkUser FOREIGN KEY (FkUsuario) REFERENCES Usuario(idUsuario)
 );
 
 
-SELECT * FROM usuario;
+SELECT * FROM Usuario;
+SELECT * FROM Postagem;
+SELECT * FROM Artista;
+SELECT * FROM Musica;
+SELECT * FROM Album;
 
+
+-- Modelo de inserts: 
+
+INSERT INTO Musica VALUES
+( 2743578151 , 'Espresso','https://cdnt-preview.dzcdn.net/api/1/1/1/7/a/0/17a21c40ce4af3ac9514aac756403188.mp3?hdnea=exp=1746384065~acl=/api/1/1/1/7/a/0/17a21c40ce4af3ac9514aac756403188.mp3*~data=user_id=0,application_id=42~hmac=127b26a03b34e1b90cb72a1dda0ee5e5f08bf517bc17842a03f3da8459500a33' );
+
+INSERT INTO Artista VALUES
+(1176900, 'Sabrina Carpenter' , 'https://cdn-images.dzcdn.net/images/artist/e94f06a0e50a8b1a3032064d1552027c/500x500-000000-80-0-0.jpg');
+
+INSERT INTO Album VALUES 
+(571147791 , 1176900 ,2743578151 , 'Espresso' , '2024-04-12' , 'https://cdn-images.dzcdn.net/images/cover/e3221287a77eb262944e6528766eeba4/500x500-000000-80-0-0.jpg');
+
+INSERT INTO Postagem VALUES
+(DEFAULT , 'Felicidade', 'Sei la o que não sei o que la' , DEFAULT , 1, 2743578151);
+
+
+
+-- Modelo select:
+SELECT Musica.Titulo as Titulo, Album.Titulo_Album as Nome_Album, Album.Data_lancamento as Lancamento, Artista.Nome as Artista 
+FROM Musica JOIN Album ON Album.FkMusica = Musica.idMusica JOIN Artista ON Album.FkArtista = Artista.idArtista;
+
+SELECT Usuario.Nome as Usuario, Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia, Musica.Titulo AS Musica
+FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica;

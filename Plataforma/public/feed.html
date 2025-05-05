@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Feed:   
+
+    <br><br>
+
+    <div id="div_postagem_geral">
+
+    </div>
+</body>
+</html>
+
+<script>
+
+async function postagensGerais() {
+        
+        var mensagem = "";
+        const resp = await fetch(`/musica/postagens_gerais/`);
+
+        if (resp.ok) {
+
+            const postagens_gerais = await resp.json();
+
+
+            console.log(postagens_gerais);
+
+            postagens_gerais.forEach(element => {
+                mensagem += `
+                    <h1>${element.Sentimento}</h1>
+                    <p>${element.Historia}</p>
+                    <img src= "${element.Foto}" width = "60px"
+                    <br>
+                     <audio id="audioPreview"  controls>
+                     <source src="${element.Preview}" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.</audio>
+                    <br>
+                    <br>
+                `;
+            });
+
+            div_postagem_geral.innerHTML = mensagem;
+
+        }else{
+            console.log('Erro ao achar as postagens!');
+        }
+
+
+    }
+    postagensGerais();
+
+</script>

@@ -1,4 +1,37 @@
-var usuarioModel = require("../models/musicModels");
+var musicModel = require("../models/musicModels");
+
+function postagens(req, res) {
+
+    var idUsuario = req.params.idusuario;   
+
+    musicModel.postagens(idUsuario).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as postagens.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function postagens_gerais( res) {
+
+    musicModel.postagens().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as postagens.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 
 function cadastrar(req, res) {
     var sentimento = req.body.sentimentoServer;
@@ -6,8 +39,8 @@ function cadastrar(req, res) {
     var idMusica = req.body.idMusicaServer;
     var idArtista = req.body.idArtistaServer;
     var artista = req.body.Nome_artistaServer;
-    var Titulo =req.bodytituloServer
-    var Preview=req.bodyPreview_MusicaServer
+    var Titulo = req.body.tituloServer
+    var Preview = req.body.Preview_MusicaServer
     var Foto_artista = req.body.Foto_artistaServer;
     var Titulo_Album = req.body.Titulo_AlbumServer;
     var Data_Lancamento = req.body.Data_LancamentoServer;
@@ -37,19 +70,20 @@ function cadastrar(req, res) {
         res.status(400).send("O ID do álbum está undefined!");
     } else if (idUser == undefined) {
         res.status(400).send("O ID do usuário está undefined!");
-    } else if( Titulo == undefined){
+    } else if (Titulo == undefined) {
         res.status(400).send("O Titulo está undefined!");
     }
-    else if( Preview == undefined){
+    else if (Preview == undefined) {
         res.status(400).send("O Preview está undefined!");
     }
-    else{
-        musicModel.cadastrar(sentimento, historia, idMusica, idArtista, artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum, idUser , Titulo, Preview)
+    else {
+        musicModel.cadastrar(sentimento, historia, idMusica, idArtista, artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum, idUser, Titulo, Preview)
             .then(
                 function (resultado) {
                     res.json(resultado);
                 }
-            ).catch(
+            )
+            .catch(
                 function (erro) {
                     console.log(erro);
                     console.log(
@@ -63,5 +97,7 @@ function cadastrar(req, res) {
 }
 
 module.exports = {
+    postagens,
+    postagens_gerais,
     cadastrar
 }

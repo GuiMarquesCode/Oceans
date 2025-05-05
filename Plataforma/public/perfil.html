@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 
+
 <body>
 
     <div>
@@ -17,10 +18,18 @@
 
     <br><br>
 
+
     <button onclick="redirecionarMusic()">Fazer cadastro de música</button>
     <br>
     <br>
     <a href="update.html">Atualizar registro</a>
+
+    <br><br>
+    <h1>Postagens: </h1>
+    <br>
+    <div id="div_postagens">
+
+    </div>
 
 </body>
 
@@ -41,8 +50,41 @@
         window.location.href = "./login.html";
     }
 
-    function redirecionarMusic(){
+    function redirecionarMusic() {
         window.location.href = "./cadMusica.html";
     }
 
+    async function postagens() {
+        var idusuario = sessionStorage.ID_USUARIO;
+
+        const resp = await fetch(`/musica/postagens/${idusuario}`);
+
+        if (resp.ok) {
+
+            const postagens = await resp.json();
+
+
+            console.log(postagens);
+
+            postagens.forEach(element => {
+                div_postagens.innerHTML += `
+                    <h1>${element.Sentimento}</h1>
+                    <p>${element.Historia}</p>
+                    <img src= "${element.Foto}" width = "60px"
+                    <br>
+                     <audio id="audioPreview"  controls>
+                     <source src="${element.Preview}" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.</audio>
+                    <br>
+                    <br>
+                `;
+            });
+
+        }else{
+            console.log('Erro ao achar as postagens!');
+        }
+
+
+    }
+    postagens();
 </script>
