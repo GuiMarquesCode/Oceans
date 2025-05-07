@@ -14,8 +14,9 @@
 
     <br><br>
 
-    <input type="text" placeholder="Pesquise um artista">
-
+    <input type="text" placeholder="Pesquise um artista..." id="input_artista" >
+    <button onclick="carregar_artista()">Pesquisar artista</button>
+    <br><br>
     <div id="div_postagem_geral">
 
     </div>
@@ -41,7 +42,6 @@ function aumentar_limite(){
 
 
 
-
 async function postagensGerais() {
         
         var mensagem = "";
@@ -57,6 +57,7 @@ async function postagensGerais() {
             for(i = 0 ; i <= limite_post; i++){
                 mensagem += `
                     <h4>${postagens_gerais[i].Nome} - ${postagens_gerais[i].Data}</h4>
+                    <h5>${postagens_gerais[i].Musica} - ${postagens_gerais[i].Sentimento}</h5>
                     <p>${postagens_gerais[i].Historia}</p>
                     <img src= "${postagens_gerais[i].Foto}" width = "60px"
                     <br>
@@ -80,5 +81,10 @@ async function postagensGerais() {
 
     }
     
+
+async function carregar_artista() {
+    sessionStorage.Dado_Artista = input_artista.value;
+    window.location = "./artista.html"; 
+}
 
 </script>

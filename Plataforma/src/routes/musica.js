@@ -34,6 +34,31 @@ rota.get('/pesquisar2/:id', async (req, res) => {
     }
 });
 
+rota.get('/pesquisar_dados_artista/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const response = await fetch(`https://api.deezer.com/artist/${encodeURIComponent(id)}`);
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error("Erro ao buscar dados da Deezer:", error);
+        res.status(500).json({ erro: "Erro ao consultar a Deezer" });
+    }
+});
+
+rota.get('/pesquisar_musica_artista/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const response = await fetch(`https://api.deezer.com/artist/${encodeURIComponent(id)}/top?limit=20`);
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error("Erro ao buscar dados da Deezer:", error);
+        res.status(500).json({ erro: "Erro ao consultar a Deezer" });
+    }
+});
 
 rota.get('/postagens/:idusuario', function (req, res) {
     musicController.postagens(req, res);

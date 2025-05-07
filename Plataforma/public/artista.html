@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="feed.html">Voltar ao feed</a>
+
+    <div id="div_artista">
+
+    </div>
+    <br><br><br>
+    <div id="div_postagem">
+
+    </div>
+
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <button onclick="verMenos()">Ver menos</button>
+    <div id="div_conhecer_musica">
+        <h3>Não conhece? Veja algumas musicas desse(a) artista!</h3>
+        <br>
+
+    </div>
+    <button onclick="verMais()">Ver mais</button>
+</body>
+
+</html>
+
+<script>
+
+
+
+    async function carregar_artista() {
+
+        const artista = sessionStorage.Dado_Artista;
+        var artista_carregar = "";
+        var status_carregar = "";
+        const resp = await fetch(`/musica/pesquisar?q=${encodeURIComponent(artista)}`);
+
+        if (resp.ok) {
+
+            const dados = await resp.json();
+            const idArtista = parseInt(dados.data[0].artist.id);
+            sessionStorage.idArtista = idArtista;
+
+            const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(idArtista)}`);
+            const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
+            const resp_estatistcas = await estatistcas_artista.json();
+            const dadosArtista = await respArtista.json();
+
+            if (respArtista.ok || estatistcas_artista.ok){
+
+                var Num_Post = parseInt(resp_estatistcas[0].Num_Post);
+                
+                
+                artista_carregar =
+                    `
+                    <h1>${dadosArtista.name}</h1>
+                    <br>
+                    <img src ="${dadosArtista.picture_big}" style = "width : 300px">
+                    `;
+
+                
+                if(Num_Post == 0){
+                    status_carregar = 
+                `
+                    <h1>Esse artista ainda não causou nenhum sentimento nos usuários, <a href = "./cadMusica.html">Seja o primeiro!</a></h1>
+                `;
+                }else{
+
+                status_carregar = 
+                `
+                    <h1>Número de sentimentos que o artista causou nos usuários: ${Num_Post}</h1>
+                `;
+                }
+                div_postagem.innerHTML = status_carregar;
+                div_artista.innerHTML = artista_carregar;
+
+            } else {
+                console.log("Erro ao achar dados do artista!")
+            }
+
+        } else {
+            console.log("Erro ao achar musica artista!")
+        }
+
+
+
+
+    }
+
+    carregar_artista();
+
+    var contadorMusica = 0;
+    var limiteContador = 3;
+
+    async function carregarMusica() {
+        var idArtista = sessionStorage.idArtista;
+        const respMusicas = await fetch(`/musica/pesquisar_musica_artista/${encodeURIComponent(idArtista)}`);
+        div_conhecer_musica.innerHTML = `<h3>Não conhece? Veja algumas musicas desse(a) artista!</h3> 
+        <br>`;
+        var musicaLista = "";
+        if (respMusicas.ok) {
+
+
+            const musicasArtista = await respMusicas.json();
+            console.log(idArtista)
+            console.log(musicasArtista.data[0]);
+
+            for (i = contadorMusica; i < limiteContador; i++) {
+                musicaLista += `<div>
+                    <img src ="${musicasArtista.data[i].album.cover_medium}" style = "width : 100px"><br>
+                    <h3>${musicasArtista.data[i].title}</h3>
+                    <audio id="audioPreview"  controls>
+                     <source src="${musicasArtista.data[i].preview}" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.</audio>
+                </div>
+                <br>
+                <br>
+                <br>
+                `;
+            }
+
+            div_conhecer_musica.innerHTML += musicaLista;
+        } else {
+            console.log("Erro ao buscar as músicas do artista!");
+        }
+
+    }
+
+    function verMais() {
+        contadorMusica += 3;
+        limiteContador += 3;
+        carregarMusica();
+    }
+
+    function verMenos() {
+        contadorMusica -= 3;
+        limiteContador -= 3;
+        carregarMusica();
+    }
+    carregarMusica();
+
+</script>
