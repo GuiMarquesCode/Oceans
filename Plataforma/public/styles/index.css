@@ -157,3 +157,47 @@ nav {
 .main_sobre span{
     font-weight: bold;
 }
+
+
+
+    /* Parte indicadores */
+
+.indicadores_empresa{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 13vh;
+}
+
+.indicadores_empresa div{
+    display: flex;
+    color: #2F6161;
+    width:20vw;
+
+    justify-content: space-around;
+    height: 78vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+.indicadores_empresa div img{
+    height: 24vh;
+}
+
+.indicadores_empresa div h1{
+    font-size: 8vh;
+    font-weight: bold;
+}
+
+.indicadores_empresa div p{
+    height: 100%;
+    font-size: 3.5vh;
+    width: 80%;
+   
+}
+
+.indicadores_empresa div li{
+   align-self: flex-start;
+   margin-left: 10vh;
+   font-size: 3.5vh;
+}
