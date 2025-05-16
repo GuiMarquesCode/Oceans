@@ -57,6 +57,7 @@ nav {
     background-size: cover;
     width: 100%;
     background-image: url("/public/assets/imgs/fundo_mar.png");
+    
 }
 
 .banner_content {
@@ -70,8 +71,25 @@ nav {
 
 .banner_content img {
     margin-top: 4vh;
+    margin-right: 5vh;
     height: 85vh;
+    animation: balancar infinite 16s;
 }
+
+@keyframes balancar {
+    0%{
+        transform: rotate(0);
+    }
+    50%{
+        transform: rotate(5deg);
+    }
+    100%{
+         transform: rotate(0deg);
+    } 
+   
+}
+
+
 
 .banner_text {
     display: flex;
@@ -258,3 +276,92 @@ nav {
     width: 50%;
     color: #2F6161;
 }
+
+
+    /* Parte de funcionamento */
+
+.funcionamento {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10vh;
+}
+
+.titulo_funcionamento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30vh;
+
+}
+
+.titulo_funcionamento h1 {
+    font-size: 10vh;
+    text-decoration: underline 0.5vh;
+    color: #2F6161;
+    font-weight: 400;
+}
+
+.main_funcionamento{
+    display: flex;
+    margin-bottom: 10vh;
+    flex-direction: column;
+}
+.main_funcionamento img{
+    width: 100%;
+}
+.main_funcionamento div{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.main_funcionamento h1{
+    font-size: 7vh;
+    font-weight: bold;
+    width: 30%;
+    color: #2F6161;
+
+}
+
+
+    /* Parte do convite */
+
+
+.convite{
+    background-image: url("/public/assets/imgs/fundo.png");
+    width: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 20vh 0;
+    display: flex;
+    gap: 15vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.convite h1{
+    color: #2F6161;
+    font-size: 15vh;
+    width: 70%;
+}
+
+.convite button{
+    background-color: #2F6161;
+    border: none;
+    border-radius: 10vh;
+    color: white;
+    font-size: 8vh;
+    font-weight: bold;
+    padding: 5vh 10vh;
+    transition: 1s;
+}
+
+.convite button:hover{
+    cursor: pointer;
+    transform: translateY(1vh) translateX(1vh);
+}
+
