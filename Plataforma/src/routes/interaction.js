@@ -15,4 +15,8 @@ rota.get('/postagens_artista/:idArtista', function (req, res) {
     interactionController.postagens_artista(req, res);
 });
 
+rota.get('/ranking_artista/', function (req, res) {
+    interactionController.ranking_artista(req, res);
+});
+
 module.exports = rota;

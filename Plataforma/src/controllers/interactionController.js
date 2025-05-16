@@ -46,9 +46,26 @@ function postagens_artista(req, res) {
     });
 }
 
+function ranking_artista(req, res) {
+
+    var idUsuario = req.params.idusuario;  
+
+    interactionModels.ranking_artista(idUsuario).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado); 
+        } else {
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as postagens.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 module.exports = {
     dados_artista,
     postagens_artista,
-    postagens_gerais
+    postagens_gerais,
+    ranking_artista
 }

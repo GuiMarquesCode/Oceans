@@ -25,9 +25,21 @@ function postagens_artista(idArtista) {
     return database.executar(instrucaoSql)
 }
 
+function ranking_artista() {
+    var instrucaoSql = `
+         SELECT Artista.idArtista ,Artista.Nome, Artista.Foto, COUNT(Postagem.Sentimento) AS Num_Post FROM Postagem JOIN Musica ON Postagem.FkMusica = Musica.idMusica
+        JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON Album.FkArtista = Artista.idArtista
+        GROUP BY Artista.idArtista ,Artista.Nome, Artista.Foto ORDER BY COUNT(Postagem.idPostagem) DESC LIMIT 3;   
+       
+    `;
+    console.log("Executando a instrução do SQL : \n"+ instrucaoSql);
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     dados_artista,
     postagens_artista,
+    ranking_artista,
     postagens_gerais
 
 }

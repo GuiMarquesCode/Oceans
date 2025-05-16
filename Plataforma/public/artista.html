@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -16,7 +17,10 @@
     <br><br><br>
     <div id="div_postagem">
 
+
     </div>
+    <br><br>
+    <canvas id="myChart"></canvas>
 
     <br><br><br><br><br><br><br><br><br><br><br>
     <button onclick="verMenos()">Ver menos</button>
@@ -32,8 +36,6 @@
 
 <script>
 
-
-
     async function carregar_artista() {
 
         const artista = sessionStorage.Dado_Artista;
@@ -44,19 +46,22 @@
         if (resp.ok) {
 
             const dados = await resp.json();
+            console.log(dados)
             const idArtista = parseInt(dados.data[0].artist.id);
             sessionStorage.idArtista = idArtista;
 
             const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(idArtista)}`);
             const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
+            const ranking_artista = await fetch(`/interaction/ranking_artista/`);
             const resp_estatistcas = await estatistcas_artista.json();
+            const ranking_resposta = await ranking_artista.json();
             const dadosArtista = await respArtista.json();
 
-            if (respArtista.ok || estatistcas_artista.ok){
+            if (respArtista.ok || estatistcas_artista.ok || ranking_artista.ok) {
+                console.log(resp_estatistcas.Num_Post)
+                var Num_Post = parseInt(resp_estatistcas.Num_Post);
 
-                var Num_Post = parseInt(resp_estatistcas[0].Num_Post);
-                
-                
+                console.log(ranking_resposta);
                 artista_carregar =
                     `
                     <h1>${dadosArtista.name}</h1>
@@ -64,21 +69,79 @@
                     <img src ="${dadosArtista.picture_big}" style = "width : 300px">
                     `;
 
-                
-                if(Num_Post == 0){
-                    status_carregar = 
-                `
+
+                if (Num_Post == 0) {
+                    status_carregar =
+                        `
                     <h1>Esse artista ainda não causou nenhum sentimento nos usuários, <a href = "./cadMusica.html">Seja o primeiro!</a></h1>
                 `;
-                }else{
+                } else {
 
-                status_carregar = 
-                `
+                    status_carregar =
+                        `
                     <h1>Número de sentimentos que o artista causou nos usuários: ${Num_Post}</h1>
                 `;
                 }
                 div_postagem.innerHTML = status_carregar;
                 div_artista.innerHTML = artista_carregar;
+
+
+                function carregarGrafico() {
+
+                    const ctx = document.getElementById('myChart');
+
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ["2º", "1º" , "3º"],
+                            datasets: [
+                                {
+                                    label: `${ranking_resposta[1].Nome}`,
+                                    data: [`${ranking_resposta[1].Num_Post}`],
+                                    borderWidth: 5,
+                                    borderColor: 'rgb(255, 99, 132)',
+                                    backgroundColor: 'rgb(255, 99, 132)',
+                                },
+                                {
+                                    label: `${ranking_resposta[0].Nome}`,
+                                    data: [`${ranking_resposta[0].Num_Post}`],
+                                    borderWidth: 5,
+                                    borderColor: 'rgb(54, 162, 235)',
+                                    backgroundColor: 'rgb(54, 162, 235)',
+
+                                },
+                                {
+                                    label: `${ranking_resposta[2].Nome}`,
+                                    data: [`${ranking_resposta[2].Num_Post}`],
+                                    borderWidth: 5,
+                                    borderColor: 'rgb(54, 162, 235)',
+                                    backgroundColor: 'rgb(54, 162, 235)',
+
+                                },
+                            ]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 30
+                                    }   
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                },
+
+                            }
+                        }
+                    });
+
+
+                }
+
 
             } else {
                 console.log("Erro ao achar dados do artista!")
@@ -89,11 +152,14 @@
         }
 
 
-
+        carregarGrafico();
 
     }
 
     carregar_artista();
+
+
+    /* Carregar música */
 
     var contadorMusica = 0;
     var limiteContador = 3;
@@ -144,5 +210,8 @@
         carregarMusica();
     }
     carregarMusica();
+
+
+
 
 </script>

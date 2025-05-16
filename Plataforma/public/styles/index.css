@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Navegação */
+
+body {
+    background-color: #ffff;
+}
+
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    gap: 50vh;
+    padding: 0 10;
+    background-color: #ffff;
+    align-items: center;
+    height: 15vh;
+}
+
+.logo {
+    height: 5vh;
+}
+
+.nome {
+    height: 50vh;
+}
+
+.perfil {
+    height: 10vh;
+}
+
+/* Favoritos */
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Parte do banner */
+
+.banner {
+    display: flex;
+    height: 85vh;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    background-image: url("/public/assets/imgs/fundo_mar.png");
+}
+
+.banner_content {
+    display: flex;
+    flex-direction: row;
+    background-color: #d9d9d98a;
+    width: 100%;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.banner_content img{
+    margin-top: 4vh;
+    height: 85vh;
+}
+
+.banner_text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 3vh;
+    
+    width: 25%;
+    font-weight: 400;
+    font-size: 4vh;
+    color: #ffff;
+}
+
+.banner_text button{
+    background-color: #2F6161;
+    border: none;
+    font-size:3vh;
+    cursor: pointer;
+    padding: 3vh 3vw;
+    font-weight: 500;
+    color: white;
+    border-radius: 4vh;
+    transition: 1s;
+}
+.banner_text h1{
+    margin-left: 1vh;
+}
+.banner_text button:hover{
+    transform: translateX(0.3vh) translateY(0.3vh);
+}
+
+
+
