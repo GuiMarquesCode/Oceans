@@ -5,44 +5,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Cadastro</title>
+    <link rel="stylesheet" href="styles/autenticacao.css">
 </head>
 
 <body>
 
-    <!-- Parte do formulario onde vou colocar os inputs-->
-    <div class="formulario">
-        <div class="inputs">
 
-            <div class="campo">
-                <span>Nome:</span>
-                <input type="text" id="input_nome" placeholder="Ex: Guilherme...">
+    <nav>
+        <a href="index.html">
+            <img src="assets/icon/favicon.png">
+        </a>
+    </nav>
+
+    <div class="container">
+
+        <div class="campo_cadastro">
+            <div class="autenticacao_texto">
+                <p>Venha fazer parte dessa comundiade
+                    <br>
+                    <span>cadastre-se</span>!
+                </p>
             </div>
 
-            <div class="campo">
-                <span>Email:</span>
-                <input type="text" id="input_email" placeholder="Ex:Fulano@sptech.com">
+            <div class="campos_login">
+
+                <label>
+                    <span>Usuário:</span>
+                    <input type="text" id="input_nome" placeholder="Ex: Oceanatico...">
+                </label>
+
+                <label>
+                    <span>Email:</span>
+                    <input type="text" id="input_email" placeholder="Ex: usuario@oceans.com">
+                </label>
+
+                <label>
+                    <span>Senha:</span>
+                    <div>
+                        <input type="password" id="input_senha" placeholder="********">
+                        <img src="assets/icon/olho_aberto.png" onclick="mostrar()" id="imagem_olho_aberto"
+                            style="cursor: pointer;">
+                        <img src="assets/icon/olho_fechado.png" onclick="esconder()" id="imagem_olho_fechado"
+                            style="cursor: pointer;">
+                    </div>
+                </label>
+                <label>
+                    <span>Confirmar senha:</span>
+                    <div>
+                        <input type="password" id="input_confirmacao" placeholder="********">
+                        <img src="assets/icon/olho_aberto.png" onclick="mostrar_confirm()"
+                            id="imagem_olho_aberto_confirmacao" style="cursor: pointer;">
+                        <img src="assets/icon/olho_fechado.png" onclick="esconder_confirm()"
+                            id="imagem_olho_fechado_confirmacao" style="cursor: pointer;">
+                    </div>
+                </label>
             </div>
 
-            <div class="campo">
-                <span>Senha:</span>
-                <input type="password" id="input_senha" placeholder="*********">
+            <div class="indicadores_cadastro">
+                <a href="cadastro.html">Já está na Ocean? Entre!</a>
+                <button onclick="verificar()">Cadastrar!</button>
             </div>
 
-            <div class="campo">
-                <span>Confirme a senha:</span>
-                <input type="password" id="input_confirmacao">
-            </div>
         </div>
 
-        <button onclick="cadastrar()">Cadastrar-se</button>
-        <br><br>
-        <a href="login.html">Já tem cadastro? Entre!</a>
+        <div class="alerta" id="alerta">
+
+        </div>
+
     </div>
+
 </body>
 
 </html>
 
+<!-- <input type="text" id="input_nome" placeholder="Ex: Guilherme...">
+<input type="text" id="input_email" placeholder="Ex:Fulano@sptech.com">
+<input type="password" id="input_senha">
+<input type="password" id="input_confirmacao">
+ -->
 <script>
+
+
+    const especiais = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+        '-', '_', '=', '+', '[', ']', '{', '}', ';', ':',
+        "'", '"', '\\', '|', ',', '.', '<', '>', '/', '?', '`', '~'];
+
+    const maiusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    const numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+
+    imagem_olho_fechado.style.display = "none"
+    imagem_olho_fechado_confirmacao.style.display = "none"
+    alerta.style.display = "none"
+
+
+    function mostrar() {
+        imagem_olho_fechado.style.display = "block"
+        imagem_olho_aberto.style.display = "none"
+        input_senha.type = "text"
+    }
+
+    function esconder() {
+        imagem_olho_fechado.style.display = "none"
+        imagem_olho_aberto.style.display = "block"
+        input_senha.type = "password"
+    }
+
+    function mostrar_confirm() {
+        imagem_olho_fechado_confirmacao.style.display = "block";
+        imagem_olho_aberto_confirmacao.style.display = "none";
+        input_confirmacao.type = "text";
+    }
+
+    function esconder_confirm() {
+        imagem_olho_fechado_confirmacao.style.display = "none";
+        imagem_olho_aberto_confirmacao.style.display = "block";
+        input_confirmacao.type = "password";
+    }
+
+
+
+    function verificar() {
+        var nome = input_nome.value;
+        var email = input_email.value;
+        var senha = input_senha.value;
+        var confirmacao = input_confirmacao.value;
+        var mensagem = "";
+        var erro = false;
+
+        var possuiCaracter = false;
+        var possuiNum = false;
+        var possuiMaiuscula = false;
+
+        for (var i = 0; i < especiais.length; i++) {
+            if (senha.includes(especiais[i])) {
+                possuiCaracter = true;
+                break;
+            }
+        }
+
+        for (var i = 0; i < maiusculas.length; i++) {
+            if (senha.includes(maiusculas[i])) {
+                possuiMaiuscula = true;
+                break;
+            }
+        }
+
+        for (var i = 0; i < numeros.length; i++) {
+            if (senha.includes(numeros[i])) {
+                possuiNum = true;
+                break;
+            }
+        }
+
+
+
+        if (nome == "" || email == "" || senha == "" || confirmacao == "") {
+
+            mensagem = "<h1>Preencha <span>todos os campos</span> para continuar!"
+
+            erro = true;
+
+        } else if (!email.includes('@') || !email.includes('.')) {
+            mensagem = "<h1>O email deve conter <span>@</span> e <span>.</span>para continuar!"
+
+            erro = true;
+        } else if (email.length <= 10) {
+            mensagem = "<h1>Email <span>muito curto</span> para cadastro!"
+
+            erro = true;
+
+        } else if (!possuiCaracter || !possuiMaiuscula || !possuiNum) {
+            var mensagem_de_falta = "";
+
+            if (!possuiCaracter) {
+                mensagem_de_falta += '<br><span>- Caractere especial</span>';
+            }
+            if (!possuiMaiuscula) {
+                mensagem_de_falta += '<br><span>- Letra maiúscula</span>';
+            }
+            if (!possuiNum) {
+                mensagem_de_falta += '<br><span>- Número</span>';
+            }
+            mensagem = `<h1>Ainda é preciso adicionar os seguintes requisitos na senha: ${mensagem_de_falta}</h1> `;
+            erro = true;
+        }
+        else if (senha.length < 9) {
+            mensagem = "A senha deve ter ao menos <span>8 caracteres<span>!"
+
+            erro = true
+        }
+        else if (confirmacao != senha) {
+            mensagem = "A senha de confirmação<span> deve ser igual</span> a senha!"
+            erro = true;
+        }else{
+            cadastrar()
+        }
+
+
+
+        if (erro == true) {
+            setTimeout(() => {
+                alerta.style.display = "none"
+            }, 4000);
+
+            alerta.style.display = "block"
+            alerta.innerHTML = mensagem
+        }
+
+    }
+
+
+
 
     function cadastrar() {
 
@@ -50,6 +226,7 @@
         var emailVar = input_email.value;
         var senhaVar = input_senha.value;
         var confrimacaoSenha = input_confirmacao.value;
+
 
 
         fetch("/usuarios/cadastrar", {
@@ -63,21 +240,21 @@
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
-        console.log("resposta: ", resposta);
+            console.log("resposta: ", resposta);
 
-        if (resposta.ok) {
-          setTimeout(() => {
-            window.location = "login.html";
-          }, "2000");
+            if (resposta.ok) {
+                setTimeout(() => {
+                    window.location = "login.html";
+                }, "2000");
 
-        } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
-        }
-      })
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        })
             .catch(function (resposta) {
                 console.log(`#ERRO: ${resposta}`);
-             
+
             })
-        return false;
+    
     }
 </script>

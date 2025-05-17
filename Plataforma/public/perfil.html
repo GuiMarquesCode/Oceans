@@ -4,13 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Oceans | Perfil</title>
+    <link rel="stylesheet" href="styles/perfil.css">
 </head>
-
 
 <body>
 
-    <a href="feed.html">Ir para feed</a>
+    <nav>
+        <a href="feed.html">
+            <img src="assets/icon/casa.png">
+        </a>
+
+        <a href="cadMusica.html">
+            <img src="assets/icon/addHistoria.png">
+        </a>
+
+        <a href="">
+            <img src="assets/icon/dash.png">
+        </a>
+    </nav>
+
+    <div class="container">
+
+        <div class="Perfil">
+            <img src="assets/icon/icone_perfil.png">
+            <div class="perfil_ditar">
+                <label>
+                    <h1>Seja bem vindo(a) <span id="b_usuario"></span></h1>
+                    <a href="update.html">
+                        <img src="assets/icon/caneta.png">
+                    </a>
+                </label>
+                <button>Fazer uma postagem!</button>
+            </div>
+        </div>
+
+
+        <div class="postagens">
+
+            <div class="titulo_postagens">
+                <h1>Suas postagens:</h1>
+            </div>
+
+            <div class="sem_postagem" id="sem_postagem">
+                <h1>Você ainda não fez postagens</h1>
+                <a href="">Tente fazer uma!</a>
+            </div>
+
+            <div class="list_post">
+
+                <div>
+                    <div class="esquerda">
+                        <label class="sentimento">
+                            <h1>Sentimento: <span>Felicidade</span> </h1>
+                        </label>
+
+                        <label class="historia">
+                            <span>História:</span>
+                            <div>
+                                Eu estava passando por um daqueles dias em que tudo parece pesar mais do que deveria.
+                            </div>
+                        </label>
+                    </div>
+
+
+                    <div class="direito">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--    <a href="feed.html">Ir para feed</a>
 
     <br><br>
     <div>
@@ -33,13 +116,13 @@
     <div id="div_postagens">
 
     </div>
-
+ -->
 </body>
 
 </html>
 
 <script>
-
+    sem_postagem.style.display = "none";
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     e_usuario.innerHTML = sessionStorage.EMAIL_USUARIO;
 
@@ -83,7 +166,7 @@
                 `;
             });
 
-        }else{
+        } else {
             console.log('Erro ao achar as postagens!');
         }
 

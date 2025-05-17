@@ -56,7 +56,7 @@ nav {
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
-    background-image: url("/public/assets/imgs/fundo_mar.png");
+    background-image: url("../assets/imgs/fundo_mar.png");
     
 }
 
@@ -98,7 +98,7 @@ nav {
     align-items: center;
     padding: 3vh;
 
-    width: 25%;
+    width: 30%;
     font-weight: 400;
     font-size: 4vh;
     color: #ffff;
@@ -331,7 +331,7 @@ nav {
 
 
 .convite{
-    background-image: url("/public/assets/imgs/fundo.png");
+    background-image: url("../assets/imgs/fundo.png");
     width: 100%;
     background-size: 100% 100%;
     background-repeat: no-repeat;

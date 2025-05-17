@@ -1,50 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Login</title>
+    <link rel="stylesheet" href="styles/autenticacao.css">
 </head>
+
 <body>
-    
-    <div class="formulario">
-        <div class="inputs">
 
-        <div class="campo">
-            <span>Email:</span>
-            <input type="text" id="input_email" placeholder="Ex: Sptech.school@gmail.com">
-        </div>    
+    <nav>
+        <a href="index.html">
+            <img src="assets/icon/favicon.png">
+        </a>
+    </nav>
 
-        <div class="campo">
-            <span>Senha:</span>
-            <input type="password" id="input_senha" placeholder="********">
+    <div class="container">
+
+        <div class="campo_login">
+            <div class="autenticacao_texto">
+                <p>Ficamos felizes em te ver denovo
+                    <br>
+                    <span>Entre</span>!
+                </p>
+            </div>
+
+            <div class="campos">
+                <label>
+                    <span>Email:</span>
+                    <input type="text" id="input_email" placeholder="Ex: usuario@oceans.com">
+                </label>
+
+                <label>
+                    <span>Senha:</span>
+                    <div>
+                        <input type="password" id="input_senha" placeholder="********">
+                        <img src="assets/icon/olho_aberto.png" onclick="mostrar()" id="imagme_olho_aberto"
+                            style="cursor: pointer;">
+                        <img src="assets/icon/olho_fechado.png" onclick="esconder()" id="imagem_olho_fechado"
+                            style="cursor: pointer;">
+                    </div>
+                </label>
+            </div>
+
+            <div class="indicadores">
+                <a href="cadastro.html">Ainda não está na Oceans? Cadastre-se</a>
+                <button onclick="entrar()">Entrar!</button>
+            </div>
+
         </div>
 
+        <div class="alerta" id="alerta">
+            <h1>O nome de usuário ou a senha estão <span>errados</span>. Tente novamente e encontre a harmonia certa para entrar no Oceans.
+            </h1>
         </div>
-        <button onclick="entrar()">Entrar</button>
-        <br>
-        <br>
 
-        <a href="cadastro.html">Não tem cadastro?Faça agora!</a>
     </div>
+ 
 </body>
+
 </html>
 
 <script>
 
-function entrar() {
-      
+    imagem_olho_fechado.style.display = "none"
+    alerta.style.display = "none"
+
+    function mostrar() {
+        imagem_olho_fechado.style.display = "block"
+        imagme_olho_aberto.style.display = "none"
+        input_senha.type = "text"
+    }
+
+    function esconder() {
+        imagem_olho_fechado.style.display = "none"
+        imagme_olho_aberto.style.display = "block"
+        input_senha.type = "password"
+    }
+
+    function entrar() {
+
 
         var emailVar = input_email.value;
         var senhaVar = input_senha.value;
 
         if (emailVar == "" || senhaVar == "") {
-            console.log  ('Mensagem de erro para todos os campos em branco');
-          
+            console.log('Mensagem de erro para todos os campos em branco');
+
             return false;
         }
         else {
-            setInterval( 1000)
+            setInterval(1000)
         }
 
         console.log("FORM LOGIN: ", emailVar);
@@ -63,6 +110,7 @@ function entrar() {
             console.log("ESTOU NO THEN DO entrar()!")
 
             if (resposta.ok) {
+
                 console.log(resposta);
 
                 resposta.json().then(json => {
@@ -77,17 +125,19 @@ function entrar() {
                     console.log("idUser: " + sessionStorage.ID_USUARIO);
                     console.log("Senha: " + sessionStorage.Senha_USUARIO);
                     console.log("Login realizado com sucesso!");
-                    window.location = "./perfil.html";  
-                
+                    window.location = "./perfil.html";
+
                 });
 
             } else {
-
+                setTimeout(() => {
+                    alerta.style.display = "none"
+                }, 5000);
                 console.log("Houve um erro ao tentar realizar o login!");
-
+                alerta.style.display = "block"
                 resposta.text().then(texto => {
                     console.error(texto);
-                   
+
                 });
             }
 
@@ -98,6 +148,6 @@ function entrar() {
         return false;
     }
 
- 
+
 
 </script>
