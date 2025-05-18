@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Feed</title>
     <link rel="stylesheet" href="styles/feed.css">
 </head>
-<body>
+
+<body onload=" postagensGerais() ">
     <nav>
         <div class="fotos">
-            <a href="perfil.html">
+            <a href="cadMusica.html">
                 <img src="assets/icon/addHistoria.png">
             </a>
 
-            <a href="cadMusica.html">
+            <a href="perfil.html">
                 <img src="assets/icon/perfil.png">
             </a>
         </div>
 
         <div class="pesquisa">
             <div>
-                <input type="text" placeholder=" Ex: Travis">
-                <img src="assets/icon/pesquisar-lupa.png">
+                <input type="text" placeholder=" Ex: Travis" id="input_artista">
+                <img src="assets/icon/pesquisar-lupa.png" onclick="carregar_artista()">
             </div>
 
             <select id="input_selecao">
-                <option selected >Artista</option>
+                <option selected>Artista</option>
                 <option>Usuário</option>
             </select>
         </div>
@@ -49,94 +51,100 @@
     </div>
 
 
-    <div class="list_post">
-
-        
+    <div class="list_post" id="div_postagem_geral">
 
     </div>
+
+    <button class="CarregarMais" onclick="aumentar_limite()">Carregar Mais</button>
 
 </body>
+
 </html>
-
-<!-- <body onload="postagensGerais()">
-    <a href="perfil.html">Perfil</a>
-
-    <br><br>
-
-    Feed:   
-
-    <br><br>
-
-    <input type="text" placeholder="Pesquise um artista..." id="input_artista" >
-    <button onclick="carregar_artista()">Pesquisar artista</button>
-    <br><br>
-    <div id="div_postagem_geral">
-
-    </div>
-    <br><br>
-    <button onclick="aumentar_limite()" id="button_Ver_Mais">Ver mais</button>
-</body> -->
 
 <script>
 
-var limite_post = 1;
-var tamanho_post = 0;
-function aumentar_limite(){
-    if(limite_post <= tamanho_post){
-        limite_post += 2;
-        postagensGerais();
-    }else{
-        button_Ver_Mais.style.display = 'none';
+    var limite_post = 1;
+    var tamanho_post = 0;
+    function aumentar_limite() {
+        if (limite_post <= tamanho_post) {
+            limite_post += 2;
+            postagensGerais();
+        } else {
+            button_Ver_Mais.style.display = 'none';
+        }
     }
-}
 
 
 
 
 
-async function postagensGerais() {
-        
+    async function postagensGerais() {
+
         var mensagem = "";
         const resp = await fetch(`/interaction/postagens_gerais/`);
 
         if (resp.ok) {
 
             const postagens_gerais = await resp.json();
-            tamanho_post =postagens_gerais.length;
-            
+            tamanho_post = postagens_gerais.length;
+
             console.log(postagens_gerais);
 
-            for(i = 0 ; i <= limite_post; i++){
+            for (i = 0; i <= limite_post; i++) {
                 mensagem += `
-                    <h4>${postagens_gerais[i].Nome} - ${postagens_gerais[i].Data}</h4>
-                    <h5>${postagens_gerais[i].Musica} - ${postagens_gerais[i].Sentimento}</h5>
-                    <p>${postagens_gerais[i].Historia}</p>
-                    <img src= "${postagens_gerais[i].Foto}" width = "60px"
-                    <br>
-                     <audio id="audioPreview"  controls>
-                     <source src="${postagens_gerais[i].Preview}" type="audio/mpeg">
-                    Seu navegador não suporta o elemento de áudio.</audio>
-                 
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                                <div class="postagem">
+                    <div class="nome">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=${postagens_gerais[i].Nome}&backgroundColor=2c5c5c">
+                        <h1>- ${postagens_gerais[i].Nome}</h1>
+                    </div>
+
+                    <div class="infos">
+                        <div class="cartao">
+                            <div class="esquerdo">
+                                <h1>Sentimento: <span>${postagens_gerais[i].Sentimento}</span></h1>
+                                <label>
+                                    <h1><span>História:</span></h1>
+                                    <div>
+                                        <p>${postagens_gerais[i].Historia}</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="direito">
+                                <div class="foto_nome">
+                                    <img src="${postagens_gerais[i].Foto}">
+                                    <h1>${postagens_gerais[i].Musica} - ${postagens_gerais[i].Artista}</h1>
+                                </div>
+
+                                <div class="inputs_musica">
+                                    <audio id="audioPreview" controls>
+                                        <source src="${postagens_gerais[i].Preview}" type="audio/mpeg">
+                                        Seu navegador não suporta o elemento de áudio.
+                                    </audio>
+
+                                    <p>${postagens_gerais[i].Data}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 `;
             };
 
             div_postagem_geral.innerHTML = mensagem;
 
-        }else{
+        } else {
             console.log('Erro ao achar as postagens!');
         }
 
 
     }
-    
 
-async function carregar_artista() {
-    sessionStorage.Dado_Artista = input_artista.value;
-    window.location = "./artista.html"; 
-}
+
+    async function carregar_artista() {
+        sessionStorage.Dado_Artista = input_artista.value;
+        window.location = "./artista.html";
+    }
 
 </script>

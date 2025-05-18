@@ -253,9 +253,6 @@ span{
     font-size: 2.5vh;
 }
 
-
-
-
 .inputs_musica{
     display: flex;
     flex-direction: column;
@@ -284,3 +281,5 @@ audio {
 audio::content{
     font-size: 0.2vh;
 }
+
+

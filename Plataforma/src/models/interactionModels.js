@@ -7,9 +7,13 @@ function dados_artista(idArtista) {
 }
 
 function postagens_gerais() {
-    var instrucaoSql = `SELECT Usuario.idUsuario as ID,Usuario.Nome as Nome, Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia, Postagem.DataPostagem as Data,Musica.Titulo AS Musica , Album.foto as Foto, Musica.Preview
-    FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
-    JOIN Album ON Musica.FkAlbum = Album.idAlbum WHERE Usuario.idUsuario ORDER BY Postagem.DataPostagem DESC;`;
+    var instrucaoSql = `SELECT Usuario.idUsuario as ID,Usuario.Nome as Nome, Postagem.Sentimento as Sentimento, Postagem.Historia AS Historia,
+  DATE_FORMAT(Postagem.DataPostagem, '%d/%m/%Y %H:%i') as "Data",Musica.Titulo AS Musica , Album.foto as Foto,
+Musica.Preview, Artista.Nome as Artista
+FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
+JOIN Album ON Musica.FkAlbum = Album.idAlbum
+JOIN Artista ON Album.FkArtista = Artista.idArtista
+WHERE Usuario.idUsuario ORDER BY Postagem.DataPostagem DESC;`;
     console.log("Executando a instrução do SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql)
 }
@@ -32,7 +36,7 @@ function ranking_artista() {
         GROUP BY Artista.idArtista ,Artista.Nome, Artista.Foto ORDER BY COUNT(Postagem.idPostagem) DESC LIMIT 3;   
        
     `;
-    console.log("Executando a instrução do SQL : \n"+ instrucaoSql);
+    console.log("Executando a instrução do SQL : \n" + instrucaoSql);
     return database.executar(instrucaoSql)
 }
 
