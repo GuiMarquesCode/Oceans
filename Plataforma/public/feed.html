@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Oceans | Feed</title>
+    <link rel="stylesheet" href="styles/feed.css">
 </head>
-<body onload="postagensGerais()">
+<body>
+    <nav>
+        <div class="fotos">
+            <a href="perfil.html">
+                <img src="assets/icon/addHistoria.png">
+            </a>
+
+            <a href="cadMusica.html">
+                <img src="assets/icon/perfil.png">
+            </a>
+        </div>
+
+        <div class="pesquisa">
+            <div>
+                <input type="text" placeholder=" Ex: Travis">
+                <img src="assets/icon/pesquisar-lupa.png">
+            </div>
+
+            <select id="input_selecao">
+                <option selected >Artista</option>
+                <option>Usuário</option>
+            </select>
+        </div>
+
+
+        <img src="assets/icon/favicon.png" class="icone">
+    </nav>
+
+</body>
+</html>
+
+<!-- <body onload="postagensGerais()">
     <a href="perfil.html">Perfil</a>
 
     <br><br>
@@ -22,8 +54,7 @@
     </div>
     <br><br>
     <button onclick="aumentar_limite()" id="button_Ver_Mais">Ver mais</button>
-</body>
-</html>
+</body> -->
 
 <script>
 

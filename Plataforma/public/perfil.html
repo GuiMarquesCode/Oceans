@@ -35,7 +35,10 @@
                         <img src="assets/icon/caneta.png">
                     </a>
                 </label>
-                <button>Fazer uma postagem!</button>
+                <a href="cadMusica.html">
+                    <button>Fazer uma postagem!</button>
+                </a>
+
             </div>
         </div>
 
@@ -51,28 +54,7 @@
                 <a href="">Tente fazer uma!</a>
             </div>
 
-            <div class="list_post">
-
-                <div>
-                    <div class="esquerda">
-                        <label class="sentimento">
-                            <h1>Sentimento: <span>Felicidade</span> </h1>
-                        </label>
-
-                        <label class="historia">
-                            <span>História:</span>
-                            <div>
-                                Eu estava passando por um daqueles dias em que tudo parece pesar mais do que deveria.
-                            </div>
-                        </label>
-                    </div>
-
-
-                    <div class="direito">
-
-                    </div>
-
-                </div>
+            <div class="list_post" id="div_postagens">
 
             </div>
 
@@ -124,7 +106,7 @@
 <script>
     sem_postagem.style.display = "none";
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-    e_usuario.innerHTML = sessionStorage.EMAIL_USUARIO;
+
 
     console.log("EMAIL: " + sessionStorage.EMAIL_USUARIO);
     console.log("NOME: " + sessionStorage.NOME_USUARIO);
@@ -146,25 +128,50 @@
         const resp = await fetch(`/musica/postagens/${idusuario}`);
 
         if (resp.ok) {
-
+            var mensagem = ""
             const postagens = await resp.json();
 
 
             console.log(postagens);
 
             postagens.forEach(element => {
-                div_postagens.innerHTML += `
-                    <h1>${element.Sentimento}</h1>
-                    <p>${element.Historia}</p>
-                    <img src= "${element.Foto}" width = "60px"
-                    <br>
-                     <audio id="audioPreview"  controls>
-                     <source src="${element.Preview}" type="audio/mpeg">
-                    Seu navegador não suporta o elemento de áudio.</audio>
-                    <br>
-                    <br>
+                mensagem += `
+                        <div class="cartao">
+                    <div class="esquerdo">
+                        <h1>Sentimento: <span>${element.Sentimento}</span></h1>
+                        <label>
+                            <h1><span>História:</span></h1>
+                            <div>
+                                <p>${element.Historia}
+                                </p>
+                            </div>
+                        </label>
+
+                        
+                    </div>
+
+                    <div class="direito">
+                        <div class="foto_nome">
+                            <img src="${element.Foto}">
+                            <h1>${element.Musica} - ${element.Artista}</h1>
+                        </div>
+
+                        <div class="inputs_musica">
+                            <audio id="audioPreview" controls>
+                                <source src="${element.Preview}" type="audio/mpeg">
+                                Seu navegador não suporta o elemento de áudio.
+                            </audio>
+
+                            <p>${element.Data}</p>
+                        </div>
+
+                    </div>
+
+                </div>
                 `;
             });
+
+            div_postagens.innerHTML = mensagem; 
 
         } else {
             console.log('Erro ao achar as postagens!');
