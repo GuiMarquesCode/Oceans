@@ -22,7 +22,38 @@
 
             <div class="campo">
                 <span>Sentimento:</span>
-                <input type="text" id="input_sentimento" placeholder="Ex: A música que não toca">
+                <select id="input_sentimento">
+                    <option selected disabled value="">Selecione um sentimento</option>
+                    <option value="Alegria">Alegria</option>
+                    <option value="Amor">Amor</option>
+                    <option value="Ansiedade">Ansiedade</option>
+                    <option value="Arrependimento">Arrependimento</option>
+                    <option value="Calma">Calma</option>
+                    <option value="Ciúmes">Ciúmes</option>
+                    <option value="Confusão">Confusão</option>
+                    <option value="Curiosidade">Curiosidade</option>
+                    <option value="Determinação">Determinação</option>
+                    <option value="Desânimo">Desânimo</option>
+                    <option value="Euforia">Euforia</option>
+                    <option value="Esperança">Esperança</option>
+                    <option value="Frustração">Frustração</option>
+                    <option value="Felicidade">Felicidade</option>
+                    <option value="Gratidão">Gratidão</option>
+                    <option value="Insegurança">Insegurança</option>
+                    <option value="Inspiração">Inspiração</option>
+                    <option value="Melancolia">Melancolia</option>
+                    <option value="Medo">Medo</option>
+                    <option value="Nostalgia">Nostalgia</option>
+                    <option value="Orgulho">Orgulho</option>
+                    <option value="Paz">Paz</option>
+                    <option value="Raiva">Raiva</option>
+                    <option value="Reflexão">Reflexão</option>
+                    <option value="Saudade">Saudade</option>
+                    <option value="Solidão">Solidão</option>
+                    <option value="Surpresa">Surpresa</option>
+                    <option value="Tristeza">Tristeza</option>
+                </select>
+
             </div>
             <br><br>
             <div class="campo">
@@ -181,9 +212,9 @@
             console.log("resposta: ", resposta);
 
             if (resposta.ok) {
-               
-                    window.location = "perfil.html";
-              
+
+                window.location = "perfil.html";
+
             } else {
                 throw "Houve um erro ao tentar realizar o cadastro!";
             }

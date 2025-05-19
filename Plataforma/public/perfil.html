@@ -22,6 +22,10 @@
         <a href="">
             <img src="assets/icon/dash.png">
         </a>
+
+        <a onclick="sair()" style="cursor: pointer;">
+            <img src="assets/icon/Sair.png" alt="">
+        </a>
     </nav>
 
     <div class="container">
@@ -38,6 +42,8 @@
                 <a href="cadMusica.html">
                     <button>Fazer uma postagem!</button>
                 </a>
+
+               
 
             </div>
         </div>
@@ -118,9 +124,7 @@
         window.location.href = "./login.html";
     }
 
-    function redirecionarMusic() {
-        window.location.href = "./cadMusica.html";
-    }
+  
 
     async function postagens() {
         var idusuario = sessionStorage.ID_USUARIO;
