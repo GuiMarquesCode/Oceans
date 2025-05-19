@@ -10,7 +10,6 @@
 }
 
 .infoPerfil nav{
-    background-color: aqua;
     width: 100%;
     display: flex;
     align-items: center;
@@ -26,4 +25,194 @@
     height: 8vh;
 }
 
+.infoPerfil{
+    width: 100%;
+    background-image: url("../assets/icon/ondas.png");
+    background-size: 70vh;
+    background-repeat: no-repeat;
+    background-position-x: 131vh;
+    height: 100vh;
+}
 
+.Perfil img{
+    height: 100%;
+}
+
+.Perfil{
+
+    display: flex;
+    margin-top: 15vh;
+    height: 70vh;
+}
+
+.direita{
+
+    display: flex;
+    height: 100%;
+  
+    flex-direction: column;
+    gap: 7vh;
+}
+
+.direita h1{
+    font-size: 5.6vh;
+    text-align: center;
+    width: 100vh;
+    color: #2F6161;;
+}
+
+
+.direita h1 span{
+    font-weight: bold;
+}
+
+.titulo_postagens{
+    display: flex;
+
+    height: 16vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo_postagens h1{
+    color: #2F6161;
+    font-weight: 400;
+    font-size: 6vh;
+}
+
+.titulo_postagens h1 span{
+    font-weight: bold;
+}
+
+
+/* Parte das postagens */
+
+.cartao{
+    display: flex;
+    width: 90vh;
+ 
+    border: solid 0.5vh #2F6161;
+    border-radius: 2vh;
+}
+
+.esquerdo{  
+    justify-content: space-around;
+    padding-top: 1vh;
+    height: 30vh;
+    padding-bottom: 3vh;
+    gap: 2vh;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 3vh;
+}
+
+
+.esquerdo h1{
+    font-size: 4vh;
+    color: #2F6161;
+}
+
+.esquerdo label{
+    display: flex;
+
+    flex-direction: column;
+ 
+    height: 25vh;
+}
+.esquerdo label div{
+    height: 40vh;
+
+    max-height: 100%;
+    overflow-y: auto;
+    width: 85%;
+    overflow-x: hidden;
+}
+
+.esquerdo label div::-webkit-scrollbar{
+   background-color: transparent;
+}
+
+.esquerdo label div::-webkit-scrollbar-button{
+    display: none;
+}
+
+.esquerdo label div::-webkit-scrollbar-thumb{
+    background-color: #2c5c5c;
+    border-radius: 10vh;
+
+}
+
+.esquerdo label div p{
+    font-size: 3vh;
+    color: #2F6161;
+}
+
+.direito{
+    padding: 1vh 1vh 1vh 0;
+ 
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.foto_nome{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 0 ;
+}
+
+.foto_nome img{
+    height: 20vh;
+    width: 20vh;/
+}
+
+.foto_nome h1{
+    font-weight: bold;
+    color: #2F6161;
+    width: 100%;
+
+    font-size: 2.5vh;
+}
+
+.inputs_musica{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    color: #2c5c5c;
+}
+
+.inputs_musica p{
+    align-self: flex-end;
+    margin-right: 2vh;
+    margin-top: 1vh;
+    font-size: 1.9vh;
+}
+
+audio {
+  width: 30vh;
+  height: 4vh;
+  background-color: #2c5c5c;
+  color: #2c5c5c;
+  border-radius: 30px;
+
+  padding: 0.5vh;
+}
+
+audio::content{
+    font-size: 0.2vh;
+}
+
+
+.posts{
+
+    gap: 5vh;
+    display: flex;
+    align-items: center;
+   
+    flex-direction: column;
+}

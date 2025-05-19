@@ -16,6 +16,7 @@ var userRouter = require('./src/routes/usuarios');
 var indexRouter = require("./src/routes/index");
 var musicRouter = require("./src/routes/musica");
 var interactionRouter = require("./src/routes/interaction");
+var dash_userRouter = require("./src/routes/dash_user");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +29,9 @@ app.use("/", indexRouter);
 app.use("/usuarios", userRouter);
 app.use("/interaction", interactionRouter);
 app.use("/musica", musicRouter);
+app.use("/dash_user",dash_userRouter);
+
+
 
 app.listen(PORTA_APP, function () {
     console.log(`

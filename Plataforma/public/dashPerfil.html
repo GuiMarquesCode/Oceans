@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Dashboard</title>
     <link rel="stylesheet" href="styles/dashPerfil.css">
 </head>
+
 <body>
-    
+
     <div class="infoPerfil">
 
         <nav>
@@ -19,7 +21,119 @@
             </a>
         </nav>
 
+        <div class="Perfil">
+            <img src="assets/icon/icone_perfil.png">
+
+            <div class="direita">
+                <h1><span id="nome_user"></span>, atualmente seu sentimento <br> mais frequente é <span
+                        id="sentimento_usuario"></span>!</h1>
+
+                <h1><span>Você</span> tem um <span>total</span> de: <br> <span id="Qtd_Post"></span> postagens.</h1>
+
+                <h1>E o(a) <span>artista</span> que mais desperta <span>sentimentos</span> em você é: <br> <span
+                        id="artista_fav"></span></h1>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="postagens">
+
+        <div class="titulo_postagens">
+            <h1>Que tal <span>relembrar</span> de algumas <span>postagens</span>?</h1>
+        </div>
+
+        <div class="posts" id="div_postagens">
+
+        </div>
+
+    </div>
+
+
+    <div class="grafico_perfil">
+        <div class="titulo_grafico">
+            <h1> Muito <span>profundo</span> tudo o que <span>transmite</span>!</h1>
+        </div>
+
+        
+
     </div>
 
 </body>
+
 </html>
+
+
+<script>
+
+    async function carregarDados() {
+
+        var idUsuario = sessionStorage.ID_USUARIO;
+
+        nome_user.innerHTML = sessionStorage.NOME_USUARIO;
+
+        const respSentimento = await fetch(`/dash_user/sentimento/${idUsuario}`);
+        const respQtdPostagem = await fetch(`/dash_user/qtd_Postagem/${idUsuario}`);
+        const respmelhorArtista = await fetch(`/dash_user/melhor_artista/${idUsuario}`);
+        const respPost = await fetch(`/musica/postagens/${idUsuario}`);
+
+
+        var mensagem = "";
+
+        /* Parte de preecher elementos */
+
+        const quantidadePost = await respQtdPostagem.json();
+        const sentimento = await respSentimento.json();
+        const artistaFav = await respmelhorArtista.json();
+        const postagens = await respPost.json();
+        console.log(artistaFav)
+
+            for(var i = 0; i <2 ; i++) {
+                var aleatorio = parseInt(Math.random() * parseInt(quantidadePost[0].Quantidade));
+            mensagem += `
+                        <div class="cartao">
+                    <div class="esquerdo">
+                        <h1>Sentimento: <span>${postagens[aleatorio].Sentimento}</span></h1>
+                        <label>
+                            <h1><span>História:</span></h1>
+                            <div>
+                                <p>${postagens[aleatorio].Historia}
+                                </p>
+                            </div>
+                        </label>
+
+                        
+                    </div>
+
+                    <div class="direito">
+                        <div class="foto_nome">
+                            <img src="${postagens[aleatorio].Foto}">
+                            <h1>${postagens[aleatorio].Musica} - ${postagens[aleatorio].Artista}</h1>
+                        </div>
+
+                        <div class="inputs_musica">
+                            <audio id="audioPreview" controls>
+                                <source src="${postagens[aleatorio].Preview}" type="audio/mpeg">
+                                Seu navegador não suporta o postagens[aleatorio]o de áudio.
+                            </audio>
+
+                            <p>${postagens[aleatorio].Data}</p>
+                        </div>
+
+                    </div>
+
+                </div>
+                `;
+        };
+
+        div_postagens.innerHTML = mensagem;
+
+        Qtd_Post.innerHTML = quantidadePost[0].Quantidade;
+        sentimento_usuario.innerHTML = sentimento[0].Sentimento;
+        artista_fav.innerHTML = artistaFav[0].Artista;
+
+    }
+
+    carregarDados();
+
+</script>
