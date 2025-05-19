@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Dashboard</title>
     <link rel="stylesheet" href="styles/dashPerfil.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -55,9 +56,29 @@
             <h1> Muito <span>profundo</span> tudo o que <span>transmite</span>!</h1>
         </div>
 
-        
+
+        <div class="graficos">
+            <canvas id="myChart"></canvas>
+
+
+            <div id="div_grafico" class="legenda_grafico">
+                <label>
+                    <div></div>
+                    <h1>Felicidade: 3</h1>
+                </label>
+            </div>
+
+
+
+        </div>
+
+
 
     </div>
+
+
+    
+
 
 </body>
 
@@ -88,8 +109,8 @@
         const postagens = await respPost.json();
         console.log(artistaFav)
 
-            for(var i = 0; i <2 ; i++) {
-                var aleatorio = parseInt(Math.random() * parseInt(quantidadePost[0].Quantidade));
+        for (var i = 0; i < 2; i++) {
+            var aleatorio = parseInt(Math.random() * parseInt(quantidadePost[0].Quantidade));
             mensagem += `
                         <div class="cartao">
                     <div class="esquerdo">
@@ -128,11 +149,228 @@
 
         div_postagens.innerHTML = mensagem;
 
+
+
         Qtd_Post.innerHTML = quantidadePost[0].Quantidade;
         sentimento_usuario.innerHTML = sentimento[0].Sentimento;
         artista_fav.innerHTML = artistaFav[0].Artista;
 
+
+
+        const ctx = document.getElementById('myChart');
+
+        var cores = ['#143737', '#2F6161', '#9EC3BC', '#96CECE']
+        mensagem = '';
+
+
+
+
+
+
+        if (sentimento.length == 1) {
+            mensagem = `
+                <label>
+                    <div style = "background-color: ${cores[0]}"></div>
+                    <h1>${sentimento[0].Sentimento}: ${sentimento[0].Sentimentos}</h1>
+                </label>`
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [sentimento[0].Sentimento],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [sentimento[0].Sentimentos],
+                        backgroundColor: ['#143737'],
+
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            div_grafico.innerHTML = mensagem
+
+        }else if (sentimento.length == 2) {
+
+            for (var i = 0; i < sentimento.length; i++) {
+                mensagem += `
+                <label>
+                    <div style = "background-color: ${cores[i]}"></div>
+                    <h1>${sentimento[i].Sentimento}: ${sentimento[i].Sentimentos}</h1>
+                </label>`
+            }
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [sentimento[0].Sentimento, sentimento[1].Sentimento],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [sentimento[0].Sentimentos, sentimento[1].Sentimentos],
+                        backgroundColor: ['#143737', '#2F6161'],
+
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            div_grafico.innerHTML = mensagem
+
+
+
+        } else if (sentimento.length == 3) {
+
+
+
+            for (var i = 0; i < sentimento.length; i++) {
+                mensagem += `
+                <label>
+                    <div style = "background-color: ${cores[i]}"></div>
+                    <h1>${sentimento[i].Sentimento}: ${sentimento[i].Sentimentos}</h1>
+                </label>`
+            }
+            mensagem = `
+                <label>
+                    <div style = "background-color: ${cores[0]}"></div>
+                    <h1>${sentimento[0].Sentimento}: ${sentimento[0].Sentimentos}</h1>
+                </label>`
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [sentimento[0].Sentimento, sentimento[1].Sentimento, sentimento[2].Sentimento],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [sentimento[0].Sentimentos, sentimento[1].Sentimentos, sentimento[2].Sentimentos],
+                        backgroundColor: ['#143737', '#2F6161', '#9EC3BC'],
+
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+
+            div_grafico.innerHTML = mensagem
+
+
+        } else if (sentimento.length == 4) {
+
+
+
+            for (var i = 0; i < sentimento.length; i++) {
+                mensagem += `
+                <label>
+                    <div style = "background-color: ${cores[i]}"></div>
+                    <h1>${sentimento[i].Sentimento}: ${sentimento[i].Sentimentos}</h1>
+                </label>`
+            }
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [sentimento[0].Sentimento, sentimento[1].Sentimento, sentimento[2].Sentimento, sentimento[3].Sentimento],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [sentimento[0].Sentimentos, sentimento[1].Sentimentos, sentimento[2].Sentimentos, sentimento[3].Sentimentos],
+                        backgroundColor: ['#143737', '#2F6161', '#9EC3BC', '#96CECE'],
+
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            div_grafico.innerHTML = mensagem
+
+
+
+        } else {
+
+            var total = 0;
+            for (var i = 3; i < sentimento.length; i++) {
+                total += sentimento[i].Sentimentos;
+            }
+
+            for (var i = 0; i < 3; i++) {
+                mensagem += `
+                <label>
+                    <div style = "background-color: ${cores[i]}"></div>
+                    <h1>${sentimento[i].Sentimento}: ${sentimento[i].Sentimentos}</h1>
+                </label>`
+            }
+
+            mensagem += `
+             <label>
+                    <div style = "background-color: ${cores[3]}"></div>
+                    <h1> Outros: ${total}</h1>
+                </label>
+            `;
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [sentimento[0].Sentimento, sentimento[1].Sentimento, sentimento[2].Sentimento, 'Outros'],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [sentimento[0].Sentimentos, sentimento[1].Sentimentos, sentimento[2].Sentimentos, total],
+                        backgroundColor: ['#143737', '#2F6161', '#9EC3BC', '#96CECE'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+
+            div_grafico.innerHTML = mensagem
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        console.log(sentimento)
     }
+
+
+
 
     carregarDados();
 
