@@ -17,5 +17,8 @@ rota.get('/melhor_artista/:idUsuario', function (req, res) {
     dash_userController.melhor_artista(req, res);
 });
 
+rota.get('/indicacao_artista/:Sentimento', function (req, res) {
+    dash_userController.indicacao_artista(req, res);
+});
 
 module.exports = rota;

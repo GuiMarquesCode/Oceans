@@ -40,7 +40,23 @@ function melhor_artista(idUsuario) {
     return database.executar(instrucaoSql);
 }
 
+
+
+function indicacao_artista(Sentimento) {
+    var instrucaoSql = `
+   SELECT Artista.Nome as Nome, Postagem.Sentimento as Sentimento, Count(Postagem.Sentimento) as "Quantidade", Artista.idArtista as ID
+FROM  Postagem JOIN Musica ON Postagem.FkMusica = Musica.idMusica
+JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON 
+Album.FkArtista = Artista.idArtista WHERE Postagem.Sentimento = "${Sentimento}"
+GROUP BY Artista.idArtista ,Artista.Nome , Postagem.Sentimento ORDER BY Rand() limit 1;
+    `;
+    console.log("Executando a instrução do SQL: \n " + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
 module.exports = {
+    indicacao_artista,
     sentimento,
     qtd_Postagem,
     melhor_artista

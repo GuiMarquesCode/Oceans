@@ -224,7 +224,7 @@ audio::content {
     display: flex;
     width: 100%;
     padding-top: 10vh;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
 .titulo_grafico {
@@ -235,7 +235,7 @@ audio::content {
 }
 
 .titulo_grafico h1 {
-    font-size: 6vh;
+    font-size: 5vh;
     font-weight: 400;
     color: #2c5c5c;
 }
@@ -253,7 +253,7 @@ audio::content {
     padding: 10vh 0;
     justify-content: center;
     gap: 10vh;
-  
+
 }
 
 #myChart {
@@ -271,21 +271,87 @@ audio::content {
     width: 40%;
 }
 
-.legenda_grafico div{
+.legenda_grafico div {
     height: 6vh;
     width: 6vh;
 
 }
 
-.legenda_grafico label{
+.legenda_grafico label {
     display: flex;
     align-items: center;
     gap: 3vh;
-    
+
 }
 
-.legenda_grafico h1{
+.legenda_grafico h1 {
     font-size: 4vh;
     color: #2c5c5c;
     font-weight: bold;
+}
+
+
+.indicacao {
+    width: 100%;
+
+    padding-top: 3vh ;
+}
+
+.indicacao_artista {
+
+    align-items: center;
+    height: 80vh;
+    display: flex;
+    padding-top: 5vh ;
+    justify-content: space-around;
+    background-image: url("../assets/icon/ondas-invertida.png");
+    background-size: 80vh;
+    background-position-y: 6vh;
+    background-repeat: no-repeat;
+}
+
+.indicacao_artista img {
+    height: 50vh;
+    width: 50vh;
+    box-shadow: 1vh 1vh 10vh black;
+}
+
+.indicacao_artista label {
+    display: flex;
+    align-items: center;
+
+}
+
+.indicacao_artista label img {
+    height: 19vh;
+    width: 19vh;
+    box-shadow: none;
+}
+
+.indicacao_artista label div {
+
+    height: 16vh;
+    display: flex;
+    flex-direction: column;
+    width: 45vh;
+    background-color: #D9D9D9;
+    border-radius: 0vh 3vh 3vh 0vh;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.indicacao_musica{
+
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    justify-content: space-around;
+    
+}
+
+.indicacao_artista label div h1 {
+
+    color: #2c5c5c;
+    font-size: 3vh;
+    font-weight: 400;
 }

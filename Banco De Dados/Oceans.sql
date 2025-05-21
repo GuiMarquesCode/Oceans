@@ -169,6 +169,12 @@ WHERE Usuario.idUsuario = 1
 GROUP BY Usuario.Nome, Artista.Nome
 ORDER BY COUNT(Postagem.idPostagem) DESC limit 1;
 
+-- Top 3 sentimentos mais cadastrados por artista 
+SELECT Artista.Nome as Nome, Postagem.Sentimento as Sentimento, Count(Postagem.Sentimento) as "Quantidade", Artista.idArtista as ID
+FROM  Postagem JOIN Musica ON Postagem.FkMusica = Musica.idMusica
+JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON 
+Album.FkArtista = Artista.idArtista WHERE Postagem.Sentimento = "Felicidade"
+GROUP BY Artista.idArtista ,Artista.Nome , Postagem.Sentimento ORDER BY Rand() limit 1;
 
 
 

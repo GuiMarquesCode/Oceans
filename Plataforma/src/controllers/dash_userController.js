@@ -39,9 +39,24 @@ function melhor_artista(req , res){
 }
 
 
+function indicacao_artista(req , res){
+    var  Sentimento = req.params.Sentimento;
+
+    dash_userModels.indicacao_artista(Sentimento).then(function(resultado){
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }else{
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    })
+}
+
+
+
 
 
 module.exports = {
+    indicacao_artista,
     sentimento,
     qtd_Postagem,
     melhor_artista

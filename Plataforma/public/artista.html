@@ -6,33 +6,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles/artista.css">
 </head>
 
 <body>
-    <a href="feed.html">Voltar ao feed</a>
 
-    <div id="div_artista">
+    <div class="topo">
+        <nav>
+            <div class="fotos">
+                <a href="cadMusica.html">
+                    <img src="assets/icon/addHistoria.png">
+                </a>
+
+                <a href="perfil.html">
+                    <img src="assets/icon/perfil.png">
+                </a>
+            </div>
+
+            <div class="pesquisa">
+                <div>
+                    <input type="text" placeholder=" Ex: Travis" id="input_artista">
+                    <img src="assets/icon/pesquisar-lupa.png" onclick="carregar_artista()">
+                </div>
+
+                <select id="input_selecao">
+                    <option selected>Artista</option>
+                    <option>Usuário</option>
+                </select>
+            </div>
+
+            <a href="">
+                <img src="assets/icon/favicon.png" class="icone">
+            </a>
+        </nav>
+
+        <div class="titulo_artista">
+            <h1>Travis Scott</h1>
+        </div>
 
     </div>
-    <br><br><br>
-    <div id="div_postagem">
+
+    <div class="dados_artista">
+        <img src="assets/imgs/Hollywoods_Bleeding.png">
+        <div class="estatisticas">
+            <h1>Estatisticas de Travis Scott</h1>
+
+            <p>Quantos sentimentos esse(a) artista já causou: <span>8</span></p>
 
 
+            <p>Principais sentimentos: <span>Felicidade</span>,
+            <span>Tristeza</span>, <span>Raiva</span></p>
+
+
+            <div>
+                <p>Top músicas mais citadas:</p>
+                <span>1º Goosebumps - 2 postagens</span>
+                <span>2º SICKO MODE - 1 postagem</span>
+                <span>3º FE!N - 1 postagem</span>
+            </div>
+
+        </div>
     </div>
-    <br><br>
-    <canvas id="myChart"></canvas>
 
-    <br><br><br><br><br><br><br><br><br><br><br>
-    <button onclick="verMenos()">Ver menos</button>
-    <div id="div_conhecer_musica">
+
+    
+
+</body>
+
+</html>
+<!-- 
+ <div id="div_conhecer_musica">
         <h3>Não conhece? Veja algumas musicas desse(a) artista!</h3>
         <br>
 
     </div>
-    <button onclick="verMais()">Ver mais</button>
-</body>
-
-</html>
+    <button onclick="verMais()">Ver mais</button> -->
 
 <script>
 
@@ -94,7 +142,7 @@
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ["2º", "1º" , "3º"],
+                            labels: ["2º", "1º", "3º"],
                             datasets: [
                                 {
                                     label: `${ranking_resposta[1].Nome}`,
@@ -127,7 +175,7 @@
                                     position: 'bottom',
                                     labels: {
                                         padding: 30
-                                    }   
+                                    }
                                 }
                             },
                             scales: {

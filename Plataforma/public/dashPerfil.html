@@ -76,8 +76,30 @@
 
     </div>
 
+    <div class="indicacao">
+        <div class="titulo_grafico">
+            <h1>Você parece gostar muito de <span id="Sentimento_Indicacao"></span>, que tal ouvir o(a) artista <span
+                    id="Artista_indicacao" onclick="redirecionarArtista()"
+                    style="cursor: pointer; text-decoration: underline;"></span>?</h1>
+        </div>
 
-    
+
+        <div class="indicacao_artista">
+            <img src="" id="imagem_cantor">
+
+            <div class="indicacao_musica" id="listagem_musica">
+
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 
 
 </body>
@@ -86,6 +108,8 @@
 
 
 <script>
+
+    var artista = "";
 
     async function carregarDados() {
 
@@ -99,6 +123,8 @@
         const respPost = await fetch(`/musica/postagens/${idUsuario}`);
 
 
+
+
         var mensagem = "";
 
         /* Parte de preecher elementos */
@@ -108,6 +134,7 @@
         const artistaFav = await respmelhorArtista.json();
         const postagens = await respPost.json();
         console.log(artistaFav)
+
 
         for (var i = 0; i < 2; i++) {
             var aleatorio = parseInt(Math.random() * parseInt(quantidadePost[0].Quantidade));
@@ -197,7 +224,7 @@
 
             div_grafico.innerHTML = mensagem
 
-        }else if (sentimento.length == 2) {
+        } else if (sentimento.length == 2) {
 
             for (var i = 0; i < sentimento.length; i++) {
                 mensagem += `
@@ -363,15 +390,61 @@
 
 
 
+        const RespArtistaIndicado = await fetch(`/dash_user/indicacao_artista/${sentimento[0].Sentimento}`);
+
+        const artistaIndicado = await RespArtistaIndicado.json();
+
+        const respMusicas = await fetch(`/musica/pesquisar_musica_artista/${encodeURIComponent(artistaIndicado[0].ID)}`);
+
+        const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(artistaIndicado[0].ID)}`);
+
+        const musicas_artista = await respMusicas.json();
+        const dados_do_artista = await respArtista.json();
+
+        console.log(musicas_artista.data[0]);
+        console.log(dados_do_artista);
+        console.log(artistaIndicado)
+
+        var mensagem3 = ""
+        imagem_cantor.src = dados_do_artista.picture_big;
 
 
+        for (var i = 0; i < 3; i++) {
 
-        console.log(sentimento)
+            mensagem3 += `
+              <label>
+                    <img src="${musicas_artista.data[i].album.cover_medium}" >
+
+                    <div>
+                        <h1>${musicas_artista.data[i].title}</h1>
+                        <audio id="audioPreview" controls>
+                            <source src="${musicas_artista.data[i].preview}" type="audio/mpeg">
+                        </audio>
+
+                    </div>
+                </label>
+            `;
+
+        }
+
+        listagem_musica.innerHTML = mensagem3;
+        Sentimento_Indicacao.innerHTML = sentimento[0].Sentimento
+        Artista_indicacao.innerHTML = dados_do_artista.name
+
+        artista = dados_do_artista.name
+
     }
 
 
 
 
     carregarDados();
+
+    function redirecionarArtista() {
+
+        sessionStorage.Dado_Artista = artista;
+        window.location = "./artista.html";
+
+    }
 
 </script>

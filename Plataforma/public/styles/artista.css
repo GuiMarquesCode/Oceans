@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+
+
+nav {
+    display: flex;
+    width: 94vw;
+
+    height: 10vh;
+    padding: 0vh 3vh;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fotos {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 1vh;
+}
+
+.fotos img {
+    height: 7vh;
+    width: 7vh;
+}
+
+
+
+.pesquisa {
+
+    display: flex;
+    gap: 1vh;
+    border: none;
+    align-items: center;
+}
+
+.pesquisa div {
+    display: flex;
+    background-color:#D9D9D9;
+    height: 5vh;
+    border-radius: 10vh;
+    width: 50vh;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pesquisa div input {
+    height: 100%;
+    width: 45vh;
+    border-radius: 10vh 0 0 10vh;
+    border: none;
+    color: #2F6161;
+    font-size: 2.4vh; 
+    
+   padding-left: 2vh;
+    background-color: #D9D9D9;;
+}
+
+.pesquisa div img {
+    height: 3vh;
+    cursor: pointer;
+    transition: 1s;
+    margin-right: 1vh;
+}
+
+.pesquisa div img:hover{
+    transform: scale(1.1);
+}
+
+.pesquisa div input::placeholder {
+    color: #2F6161;
+    font-size: 2.4vh;
+    padding-left: 2vh;
+}
+
+.pesquisa select{
+    width: 17vh;
+    display: flex;
+    text-align: center;
+    font-size: 2.2vh;
+    font-weight: 500;
+    height: 4.2vh;
+    background-color: #D9D9D9;
+    border: none;
+    color: #2F6161;
+}
+
+
+.icone{
+    height: 5vh;
+}
+
+
+.topo{
+    background-image: url("../assets/icon/circulos.png");
+    background-repeat: no-repeat;
+    background-position-y: -53vh;
+    background-size: 100vh;
+    background-position-x: -30vh;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    height: 44vh;
+}
+
+.titulo_artista{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+
+}
+
+.titulo_artista h1{
+     color: #2F6161;
+     font-size: 10vh;
+     font-weight: bold;
+}
+
+.dados_artista{
+    display: flex;
+    justify-content: space-around;
+ 
+    width: 100%;
+    padding: 10vh 0 ;
+}
+
+.dados_artista img{
+    height: 70vh;
+    width: 70vh;
+}
+
+
+.estatisticas{
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    justify-content: space-between;
+    color: #2F6161;
+ 
+}
+
+
+.estatisticas h1{
+    font-weight: 600 ;
+    font-size: 7vh;
+}
+
+.estatisticas div{
+    display: flex;
+    flex-direction: column;
+}
+
+.estatisticas div p{
+    font-size: 5vh;
+}
+
+.estatisticas div span{
+    font-size: 5vh;
+    font-weight: bold;
+}
+
+.estatisticas p{
+    font-weight: 300;
+    font-size: 5vh;
+}
+
+.estatisticas p span{
+    font-weight: bold;
+}
