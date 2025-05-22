@@ -7,6 +7,7 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles/artista.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -41,21 +42,23 @@
         </nav>
 
         <div class="titulo_artista">
-            <h1>Travis Scott</h1>
+            <h1 id="Nome_Artista"></h1>
         </div>
 
     </div>
 
     <div class="dados_artista">
-        <img src="assets/imgs/Hollywoods_Bleeding.png">
+        <img src="assets/imgs/loading.gif" id="imagem_artista">
         <div class="estatisticas">
-            <h1>Estatisticas de Travis Scott</h1>
+            <h1 id="info_estatisticas"></h1>
 
-            <p>Quantos sentimentos esse(a) artista já causou: <span>8</span></p>
+            <p id="qtd_sentimentos_p"> <span></span></p>
 
+            <img src="assets/imgs/loading.gif" style="height: 20vh; width: 20vh; align-self: center;" id="loading_img">
 
             <p>Principais sentimentos: <span>Felicidade</span>,
-            <span>Tristeza</span>, <span>Raiva</span></p>
+                <span>Tristeza</span>, <span>Raiva</span>
+            </p>
 
 
             <div>
@@ -69,7 +72,136 @@
     </div>
 
 
-    
+    <div class="grafico_post">
+
+        <div class="postagens">
+
+            <div class="titulo_postagens">
+                <h1>Alguns relatos sobre a arte de <span> Travis Scott</span></h1>
+            </div>
+
+            <div class="posts" id="div_postagens">
+                <div class="cartao">
+                    <div class="esquerdo">
+                        <h1>Sentimento: <span>Felicidade</span></h1>
+                        <label>
+                            <h1><span>História:</span></h1>
+                            <div>
+                                <p>
+                                    Eu estava passando por um daqueles dias em que tudo parece pesar mais do que
+                                    deveria.
+                                </p>
+                            </div>
+                        </label>
+
+
+                    </div>
+
+                    <div class="direito">
+                        <div class="foto_nome">
+                            <img src="assets/imgs/playboy carti.png">
+                            <h1>Goosebumps - Travis Scott</h1>
+                        </div>
+
+                        <div class="inputs_musica">
+                            <audio id="audioPreview" controls>
+                                <source src="" type="audio/mpeg">
+                                Seu navegador não suporta o postagens[aleatorio]o de áudio.
+                            </audio>
+
+                            <p>10/20/2022 12:21</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cartao">
+                    <div class="esquerdo">
+                        <h1>Sentimento: <span>Felicidade</span></h1>
+                        <label>
+                            <h1><span>História:</span></h1>
+                            <div>
+                                <p>
+                                    Eu estava passando por um daqueles dias em que tudo parece pesar mais do que
+                                    deveria.
+                                </p>
+                            </div>
+                        </label>
+
+
+                    </div>
+
+                    <div class="direito">
+                        <div class="foto_nome">
+                            <img src="assets/imgs/playboy carti.png">
+                            <h1>Goosebumps - Travis Scott</h1>
+                        </div>
+
+                        <div class="inputs_musica">
+                            <audio id="audioPreview" controls>
+                                <source src="" type="audio/mpeg">
+                                Seu navegador não suporta o postagens[aleatorio]o de áudio.
+                            </audio>
+
+                            <p>10/20/2022 12:21</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="grafico_perfil">
+            <div class="titulo_grafico">
+                <h1>Principais sentimentos</h1>
+            </div>
+
+
+            <div class="graficos">
+                <canvas id="myChart"></canvas>
+
+
+                <div id="div_grafico" class="legenda_grafico">
+                    <label>
+                        <div style="background-color: #143737;"></div>
+                        <h1>Felicidade:1</h1>
+                    </label>
+
+                    <label>
+                        <div style="background-color: #2F6161;"></div>
+                        <h1>Calma:5</h1>
+                    </label>
+
+                    <label>
+                        <div style="background-color: #9EC3BC;"></div>
+                        <h1>Tristeza:2</h1>
+                    </label>
+
+
+                    <label>
+                        <div style="background-color: #96CECE;"></div>
+                        <h1>Raiva:3</h1>
+                    </label>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
 
 </body>
 
@@ -83,183 +215,82 @@
     <button onclick="verMais()">Ver mais</button> -->
 
 <script>
+    const ctx = document.getElementById('myChart');
+    var cores = ['#143737', '#2F6161', '#9EC3BC', '#96CECE']
+    var artista = sessionStorage.Dado_Artista;
 
-    async function carregar_artista() {
-
-        const artista = sessionStorage.Dado_Artista;
-        var artista_carregar = "";
-        var status_carregar = "";
-        const resp = await fetch(`/musica/pesquisar?q=${encodeURIComponent(artista)}`);
-
-        if (resp.ok) {
-
-            const dados = await resp.json();
-            console.log(dados)
-            const idArtista = parseInt(dados.data[0].artist.id);
-            sessionStorage.idArtista = idArtista;
-
-            const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(idArtista)}`);
-            const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
-            const ranking_artista = await fetch(`/interaction/ranking_artista/`);
-            const resp_estatistcas = await estatistcas_artista.json();
-            const ranking_resposta = await ranking_artista.json();
-            const dadosArtista = await respArtista.json();
-
-            if (respArtista.ok || estatistcas_artista.ok || ranking_artista.ok) {
-                console.log(resp_estatistcas.Num_Post)
-                var Num_Post = parseInt(resp_estatistcas.Num_Post);
-
-                console.log(ranking_resposta);
-                artista_carregar =
-                    `
-                    <h1>${dadosArtista.name}</h1>
-                    <br>
-                    <img src ="${dadosArtista.picture_big}" style = "width : 300px">
-                    `;
-
-
-                if (Num_Post == 0) {
-                    status_carregar =
-                        `
-                    <h1>Esse artista ainda não causou nenhum sentimento nos usuários, <a href = "./cadMusica.html">Seja o primeiro!</a></h1>
-                `;
-                } else {
-
-                    status_carregar =
-                        `
-                    <h1>Número de sentimentos que o artista causou nos usuários: ${Num_Post}</h1>
-                `;
-                }
-                div_postagem.innerHTML = status_carregar;
-                div_artista.innerHTML = artista_carregar;
-
-
-                function carregarGrafico() {
-
-                    const ctx = document.getElementById('myChart');
-
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ["2º", "1º", "3º"],
-                            datasets: [
-                                {
-                                    label: `${ranking_resposta[1].Nome}`,
-                                    data: [`${ranking_resposta[1].Num_Post}`],
-                                    borderWidth: 5,
-                                    borderColor: 'rgb(255, 99, 132)',
-                                    backgroundColor: 'rgb(255, 99, 132)',
-                                },
-                                {
-                                    label: `${ranking_resposta[0].Nome}`,
-                                    data: [`${ranking_resposta[0].Num_Post}`],
-                                    borderWidth: 5,
-                                    borderColor: 'rgb(54, 162, 235)',
-                                    backgroundColor: 'rgb(54, 162, 235)',
-
-                                },
-                                {
-                                    label: `${ranking_resposta[2].Nome}`,
-                                    data: [`${ranking_resposta[2].Num_Post}`],
-                                    borderWidth: 5,
-                                    borderColor: 'rgb(54, 162, 235)',
-                                    backgroundColor: 'rgb(54, 162, 235)',
-
-                                },
-                            ]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        padding: 30
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                },
-
-                            }
-                        }
-                    });
-
-
-                }
-
-
-            } else {
-                console.log("Erro ao achar dados do artista!")
-            }
-
-        } else {
-            console.log("Erro ao achar musica artista!")
-        }
-
-
-        carregarGrafico();
-
-    }
-
-    carregar_artista();
-
-
-    /* Carregar música */
-
-    var contadorMusica = 0;
-    var limiteContador = 3;
 
     async function carregarMusica() {
-        var idArtista = sessionStorage.idArtista;
-        const respMusicas = await fetch(`/musica/pesquisar_musica_artista/${encodeURIComponent(idArtista)}`);
-        div_conhecer_musica.innerHTML = `<h3>Não conhece? Veja algumas musicas desse(a) artista!</h3> 
-        <br>`;
-        var musicaLista = "";
-        if (respMusicas.ok) {
+
+        /* Puxar o id Do artista via api */
+        const resp = await fetch(`/musica/pesquisar?q=${encodeURIComponent(artista)}`);
+        const dados = await resp.json();
+
+        const idArtista = parseInt(dados.data[0].artist.id);
+       
+
+        const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(idArtista)}`);
+
+        const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
 
 
-            const musicasArtista = await respMusicas.json();
-            console.log(idArtista)
-            console.log(musicasArtista.data[0]);
+        const ranking_artista = await fetch(`/interaction/ranking_artista/`);
 
-            for (i = contadorMusica; i < limiteContador; i++) {
-                musicaLista += `<div>
-                    <img src ="${musicasArtista.data[i].album.cover_medium}" style = "width : 100px"><br>
-                    <h3>${musicasArtista.data[i].title}</h3>
-                    <audio id="audioPreview"  controls>
-                     <source src="${musicasArtista.data[i].preview}" type="audio/mpeg">
-                    Seu navegador não suporta o elemento de áudio.</audio>
-                </div>
-                <br>
-                <br>
-                <br>
-                `;
-            }
 
-            div_conhecer_musica.innerHTML += musicaLista;
+        const resp_estatistcas = await estatistcas_artista.json();
+        const ranking_resposta = await ranking_artista.json();
+        const dadosArtista = await respArtista.json();
+
+
+        console.log(resp_estatistcas)
+
+        /* Definição de dados no html */
+
+
+        imagem_artista.src =dadosArtista.picture_medium;
+        Nome_Artista.innerHTML = dadosArtista.name;
+        info_estatisticas.innerHTML = `Estatisticas de ${dadosArtista.name}`;
+        loading_img.style.display = "none"
+
+
+        if (resp_estatistcas[0].Num_Post== 0) {
+            qtd_sentimentos_p.innerHTML = `Esse artista ainda não causou <span>nenhum</span> sentimento em postagens`
         } else {
-            console.log("Erro ao buscar as músicas do artista!");
+            qtd_sentimentos_p.innerHTML = `Quantos sentimentos esse(a) artista já causou: <span>${resp_estatistcas[0].Num_Post}</span>`
         }
 
+
+
+
+    }
+    carregarMusica()
+
+    function carregar_artista() {
+        sessionStorage.Dado_Artista = input_artista.value;
+        window.location = "./artista.html";
     }
 
-    function verMais() {
-        contadorMusica += 3;
-        limiteContador += 3;
-        carregarMusica();
-    }
 
-    function verMenos() {
-        contadorMusica -= 3;
-        limiteContador -= 3;
-        carregarMusica();
-    }
-    carregarMusica();
-
-
+    /*     new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [1],
+                datasets: [{
+                    label: 'Quantidade',
+                    data: [1],
+                    backgroundColor: ['#143737'],
+    
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        }); */
 
 
 </script>

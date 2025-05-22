@@ -111,12 +111,14 @@ JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON Album.FkArtista = A
 JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON Album.FkArtista = Artista.idArtista
 GROUP BY Artista.idArtista ,Artista.Nome, Artista.Foto ORDER BY COUNT(Postagem.idPostagem) DESC LIMIT 3; 
 
--- Selecionar maior sentimento de cada artista
+-- Top 3 maiores sentimetentos de cada artista
 
 SELECT Artista.Nome AS Nome, Postagem.Sentimento , Count(Postagem.Sentimento) FROM Artista
 JOIN Album ON Album.FkArtista = Artista.idArtista 
 JOIN Musica ON Musica.FkAlbum = Album.idAlbum
-JOIN Postagem ON Postagem.FkMusica = Musica.idMusica GROUP BY Artista.Nome,Postagem.Sentimento ;  
+JOIN Postagem ON Postagem.FkMusica = Musica.idMusica 
+WHERE Artista.idArtista = "4495513" GROUP BY Artista.Nome,Postagem.Sentimento
+ORDER BY Count(Postagem.Sentimento) DESC limit 3 ;  
     
 -- Principais sentimentos
 
@@ -173,7 +175,7 @@ ORDER BY COUNT(Postagem.idPostagem) DESC limit 1;
 SELECT Artista.Nome as Nome, Postagem.Sentimento as Sentimento, Count(Postagem.Sentimento) as "Quantidade", Artista.idArtista as ID
 FROM  Postagem JOIN Musica ON Postagem.FkMusica = Musica.idMusica
 JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON 
-Album.FkArtista = Artista.idArtista WHERE Postagem.Sentimento = "Felicidade"
+Album.FkArtista = Artista.idArtista WHERE Postagem.Sentimento = "Calma"
 GROUP BY Artista.idArtista ,Artista.Nome , Postagem.Sentimento ORDER BY Rand() limit 1;
 
 
