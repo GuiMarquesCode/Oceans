@@ -19,4 +19,10 @@ rota.get('/ranking_artista/', function (req, res) {
     interactionController.ranking_artista(req, res);
 });
 
+
+rota.get('/principais_musicas/:idArtista', function(req , res){
+    interactionController.principais_musicas(req , res);
+});
+
 module.exports = rota;
+

@@ -40,10 +40,26 @@ function ranking_artista() {
     return database.executar(instrucaoSql)
 }
 
+function principais_musicas(idArtista) {
+
+    var instrucaoSql = `
+         SELECT Musica.Titulo as Titulo, Count(Postagem.FkMusica) as "Quantidade"
+        FROM  Postagem LEFT JOIN Musica ON Postagem.FkMusica = Musica.idMusica
+        LEFT JOIN Album ON Musica.FkAlbum = Album.idAlbum LEFT JOIN Artista ON 
+Album.FkArtista = Artista.idArtista WHERE Artista.idArtista = ${idArtista}
+    GROUP BY Musica.Titulo , Postagem.FkMusica ORDER BY Count(Postagem.FkMusica) DESC limit 3;
+       
+    `;
+    console.log("Executando a instrução do SQL : \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+
+}
+
 module.exports = {
     dados_artista,
     postagens_artista,
     ranking_artista,
-    postagens_gerais
+    postagens_gerais,
+    principais_musicas
 
 }

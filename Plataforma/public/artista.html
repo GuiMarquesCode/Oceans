@@ -61,7 +61,7 @@
             </p>
 
 
-            <div>
+            <div id="div_citacoes">
                 <p>Top músicas mais citadas:</p>
                 <span>1º Goosebumps - 2 postagens</span>
                 <span>2º SICKO MODE - 1 postagem</span>
@@ -223,37 +223,60 @@
     async function carregarMusica() {
 
         /* Puxar o id Do artista via api */
-        const resp = await fetch(`/musica/pesquisar?q=${encodeURIComponent(artista)}`);
+        const resp = await fetch(`/musica/pesquisar?q=${artista}`);
         const dados = await resp.json();
 
         const idArtista = parseInt(dados.data[0].artist.id);
-       
 
-        const respArtista = await fetch(`/musica/pesquisar_dados_artista/${encodeURIComponent(idArtista)}`);
+
+        const respArtista = await fetch(`/musica/pesquisar_dados_artista/${idArtista}`);
 
         const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
 
 
         const ranking_artista = await fetch(`/interaction/ranking_artista/`);
 
+        const top_3_musicas = await fetch(`/interaction/principais_musicas/${idArtista}`)
+
+        const resp_top_sentimentos = await top_3_musicas.json();
 
         const resp_estatistcas = await estatistcas_artista.json();
         const ranking_resposta = await ranking_artista.json();
         const dadosArtista = await respArtista.json();
 
 
-        console.log(resp_estatistcas)
+        console.log(idArtista)
 
         /* Definição de dados no html */
+        var mensagem_citacoes = "<p>Top músicas mais citadas:</p>";
 
-
-        imagem_artista.src =dadosArtista.picture_medium;
+        imagem_artista.src = dadosArtista.picture_medium;
         Nome_Artista.innerHTML = dadosArtista.name;
         info_estatisticas.innerHTML = `Estatisticas de ${dadosArtista.name}`;
         loading_img.style.display = "none"
 
 
-        if (resp_estatistcas[0].Num_Post== 0) {
+        if (resp_top_sentimentos.length == 0) {
+            mensagem_citacoes += "<span>Ainda não existe nenhuma postagem cadastrada!</span>"
+
+        }else{
+            for (var i = 0; i < resp_top_sentimentos.length; i++) {
+
+                mensagem_citacoes += `<span>${i+1}º ${resp_top_sentimentos[i].Titulo} - ${resp_top_sentimentos[i].Quantidade} postagens</span>`;
+                 
+            }
+
+
+        }
+
+
+
+        div_citacoes.innerHTML = mensagem_citacoes;
+
+
+
+        
+        if (resp_estatistcas[0].Num_Post == 0) {
             qtd_sentimentos_p.innerHTML = `Esse artista ainda não causou <span>nenhum</span> sentimento em postagens`
         } else {
             qtd_sentimentos_p.innerHTML = `Quantos sentimentos esse(a) artista já causou: <span>${resp_estatistcas[0].Num_Post}</span>`
