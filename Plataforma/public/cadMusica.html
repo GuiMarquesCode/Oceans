@@ -5,10 +5,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Cadastrar Música</title>
+    <link rel="stylesheet" href="styles/cadMusica.css">
 </head>
 
 <body>
-    <input type="text" id="input_pesquisa" placeholder="Digite o nome da música">
+
+    <nav>
+        <a href="feed.html">
+            <img src="assets/icon/casa.png" alt="">
+        </a>
+
+        <a href="dashPerfil.html">
+            <img src="assets/icon/dash.png" alt="">
+        </a>
+
+    </nav>
+
+    <div class="pesquisa">
+        <input type="text" id="input_pesquisa" placeholder="Ex: SICKO MODE - Travis Scott">
+        <button onclick="chamarAPI()">Pesquisar</button>
+    </div>
+
+    <main>
+
+        <div class="historia">
+            <div class="sentimento">
+                <h1>Sentimento:</h1>
+                <select id="input_sentimento">
+                    <option selected disabled value="">Selecione um sentimento</option>
+                    <option value="Alegria">Alegria</option>
+                    <option value="Amor">Amor</option>
+                    <option value="Ansiedade">Ansiedade</option>
+                    <option value="Arrependimento">Arrependimento</option>
+                    <option value="Calma">Calma</option>
+                    <option value="Ciúmes">Ciúmes</option>
+                    <option value="Confusão">Confusão</option>
+                    <option value="Curiosidade">Curiosidade</option>
+                    <option value="Determinação">Determinação</option>
+                    <option value="Desânimo">Desânimo</option>
+                    <option value="Euforia">Euforia</option>
+                    <option value="Esperança">Esperança</option>
+                    <option value="Frustração">Frustração</option>
+                    <option value="Felicidade">Felicidade</option>
+                    <option value="Gratidão">Gratidão</option>
+                    <option value="Insegurança">Insegurança</option>
+                    <option value="Inspiração">Inspiração</option>
+                    <option value="Melancolia">Melancolia</option>
+                    <option value="Medo">Medo</option>
+                    <option value="Nostalgia">Nostalgia</option>
+                    <option value="Orgulho">Orgulho</option>
+                    <option value="Paz">Paz</option>
+                    <option value="Raiva">Raiva</option>
+                    <option value="Reflexão">Reflexão</option>
+                    <option value="Saudade">Saudade</option>
+                    <option value="Solidão">Solidão</option>
+                    <option value="Surpresa">Surpresa</option>
+                    <option value="Tristeza">Tristeza</option>
+                </select>
+            </div>
+
+            <div class="historias">
+                <h1>História:</h1>
+                <textarea name="" id="input_historia"></textarea>
+            </div>
+
+            <button onclick="cadastrar()">Cadastrar</button>
+
+        </div>
+
+        <div class="info_artista">
+            <img id="imagem_artista" src="assets/imgs/Hollywoods_Bleeding.png">
+            <div>
+                <div>
+                    <h1><span id="Nome_musica">Goodbyes</span> - <span id="Nome_artista">PostMalone</span></h1>
+                    <p><span id="Nome_album">Holliwoodbleedin</span> (<span id="data">2019</span>)</p>
+                </div>
+
+                <audio id="audioPreview" controls>
+                    <source id="audio_preciew" src="" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
+
+
+
+
+<!--     <input type="text" id="input_pesquisa" placeholder="Digite o nome da música">
     <button onclick="chamarAPI()">Pesquisar</button>
     <br><br><br><br>
     <div class="formulario_musica">
@@ -72,9 +164,16 @@
 
         <a href="index.html">Voltar ao menu</a>
     </div>
-</body>
+ -->
 
-</html>
+
+
+
+
+
+
+
+
 
 <script>
 
@@ -101,7 +200,7 @@
 
 
         var musica = input_pesquisa.value;
-
+        console.log(musica);
         const urlPesquisa = `/musica/pesquisar?q=${encodeURIComponent(musica)}`;
 
         const resp = await fetch(urlPesquisa);
@@ -144,12 +243,14 @@
                 Foto_Album = infoMusica.album.cover_big;
                 idAlbum = infoMusica.album.id;
 
-                info_musica.innerHTML = `<h4>${Titulo} - ${Nome_artista}</h4>`;
+                imagem_artista.src = Foto_Album;
 
+                Nome_musica.innerHTML = Titulo;
+                Nome_artista.innerHTML = Nome_artista;
+                Nome_album.innerHTML = Titulo_Album;
+                data.innerHTML = Data_Lancamento;
+                audio_preciew.src = Preview_Musica;
 
-                img_album.innerHTML = `<img src="${Foto_Album}" alt="Album" width="200px" height="200px"><br> <h4>${Titulo_Album} - ${Data_Lancamento} </h4> <br><br> <audio id="audioPreview" autoplay >
-                <source src="${Preview_Musica}" type="audio/mpeg">
-            Seu navegador não suporta o elemento de áudio.</audio>`;
                 console.log(Preview_Musica, Titulo, idMusica, idArtista, Nome_artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum);
 
             } else {
