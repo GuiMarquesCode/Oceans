@@ -9,9 +9,9 @@ function deletar(idUsuario) {
     return database.executar(instrucaoSql);
 }
 
-function atualizar(nome,email, senha, idUsuario) {
+function atualizar(nome,senha, idUsuario) {
     var instrucaoSql = `
-        UPDATE Usuario SET Nome = '${nome}', Email = '${email}', Senha = '${senha}' WHERE idUsuario = ${idUsuario};
+        UPDATE Usuario SET Nome = '${nome}',Senha = '${senha}' WHERE idUsuario = ${idUsuario};
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

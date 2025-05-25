@@ -20,7 +20,7 @@
         </a>
 
         <a href="dashPerfil.html">
-            <img src="assets/icon/dash.png">
+            <img src="assets/icon/dash.png" id="icone_dash">
         </a>
 
         <a onclick="sair()" style="cursor: pointer;">
@@ -55,9 +55,10 @@
                 <h1>Suas postagens:</h1>
             </div>
 
-            <div class="sem_postagem" id="sem_postagem">
+            <div class="sem_postagem" id="sem_postagem" style="width: 100%; display: flex;
+            align-items: center; justify-content: center;  text-align: center;">
                 <h1>Você ainda não fez postagens</h1>
-                <a href="">Tente fazer uma!</a>
+                <a href="cadMusica.html">Tente fazer uma!</a>
             </div>
 
             <div class="list_post" id="div_postagens">
@@ -68,43 +69,6 @@
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--    <a href="feed.html">Ir para feed</a>
-
-    <br><br>
-    <div>
-        <h1>Olá <span id="b_usuario"></span> portador do email <span id="e_usuario"></span></h1>
-    </div>
-
-    <button onclick="sair()">Sair</button>
-
-    <br><br>
-
-
-    <button onclick="redirecionarMusic()">Fazer cadastro de música</button>
-    <br>
-    <br>
-    <a href="update.html">Atualizar registro</a>
-
-    <br><br>
-    <h1>Postagens: </h1>
-    <br>
-    <div id="div_postagens">
-
-    </div>
- -->
 </body>
 
 </html>
@@ -130,17 +94,25 @@
         var idusuario = sessionStorage.ID_USUARIO;
 
         const resp = await fetch(`/musica/postagens/${idusuario}`);
-
+ if (resp.status === 204) {
+        icone_dash.style.display = "none";
+        sem_postagem.style.display = "block";
+        div_postagens.innerHTML = "";
+        return;
+    }
         if (resp.ok) {
             var mensagem = ""
             const postagens = await resp.json();
 
-
-            console.log(postagens);
+            if (!postagens || postagens.length === 0){
+                icone_dash.style.display = "none"
+            }
+          
 
             postagens.forEach(element => {
                 mensagem += `
                         <div class="cartao">
+                            <img src="assets/icon/lixeira.png" style="cursor: pointer; height: 10vh; position: absolute; margin-top: 37vh; margin-left: -5vh;" onclick="excluirPostagem(${element.idPostagem})">
                     <div class="esquerdo">
                         <h1>Sentimento: <span>${element.Sentimento}</span></h1>
                         <label>
@@ -181,7 +153,24 @@
             console.log('Erro ao achar as postagens!');
         }
 
-
     }
+
+    function excluirPostagem(id_post) {
+        if (confirm("Você tem certeza que deseja excluir essa postagem?")) {
+            fetch(`/musica/excluir_postagem/${id_post}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Postagem excluída com sucesso!");
+                    postagens(); 
+                } else {
+                    alert("Erro ao excluir a postagem.");
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+    }
+
     postagens();
 </script>

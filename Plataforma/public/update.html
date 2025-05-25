@@ -5,68 +5,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oceans | Cadastro</title>
+        <link rel="stylesheet" href="styles/perfil.css">
 </head>
+
+
+</html>
+
 
 <body>
 
-    <!-- Parte do formulario onde vou colocar os inputs-->
-    <div class="formulario">
-        <div class="inputs">
+    <nav>
+        <a href="feed.html">
+            <img src="assets/icon/casa.png">
+        </a>
 
-            <div class="campo">
-                <span>Nome:</span>
-                <input type="text" id="input_nome" placeholder="Ex: Guilherme...">
-            </div>
+        <a href="cadMusica.html">
+            <img src="assets/icon/addHistoria.png">
+        </a>
 
-            <div class="campo">
-                <span>Email:</span>
-                <input type="text" id="input_email" placeholder="Ex:Fulano@sptech.com">
-            </div>
+        <a href="dashPerfil.html">
+            <img src="assets/icon/dash.png">
+        </a>
 
-            <div class="campo">
-                <span>Senha:</span>
-                <input type="password" id="input_senha" placeholder="*********">
-                <p style="cursor: pointer;" onclick="verSenha()">👁️</p>
+        <a onclick="sair()" style="cursor: pointer;">
+            <img src="assets/icon/Sair.png" alt="">
+        </a>
+    </nav>
+
+
+    
+    
+    <div class="container">
+        
+        <div class="Perfil">
+            <img src="assets/icon/icone_perfil.png" style="height: 70vh;">
+
+            <div class="info_dados">
+                <h1>Altere seus <span>dados</span>!</h1>
+
+                <div class="campos">
+                    <label for="input_nome">
+                        <p>Username:</p>
+                        <input type="text" id="input_nome" >
+                    </label>
+
+                    <label for="input_senha">
+                        <p>Senha:</p>
+                        <div style="display: flex; gap: 2vh;">
+                            <input type="password" id="input_senha">
+                            <img src="assets/icon/olho_fechado.png" id="imagem_olho" onclick="verSenha()">
+                        </div>
+                    </label>
+
+
+                </div>
+
+                <div class="botoes">
+
+                    <button class="salvar" onclick="Confirm()">Salvar novos dados!</button>
+                    <button class="excluir" onclick="abrirDel()">Deletar sua conta</button>
+
+                </div>
+
             </div>
         </div>
 
-        <button onclick="Confirm()">Atualizar</button>
-
-        <div id="div_confirmacao" class="confirmacao">
-            <h1>Tem certeza que quer fazer isso?</h1>
-            <br>
-            <button onclick="atualizar()">Sim</button>
-            <button onclick="fechar()">Não</button>
-        </div>
     </div>
 
-    <br><br>
-    <button onclick="abrirDel()">Excluir Minha Conta</button>
+    <!-- Telas de confirmação e exclusão -->
+    <div id="div_confirmacao" class="confirmacao" style="display: none;">
+        <h1>Tem certeza que quer fazer isso?</h1>
+        <br>
+        <button class="confimar_but" onclick="atualizar()">Sim</button>
+        <button class="excluir_but" onclick="fechar()">Não</button>
+    </div>
 
-    <div id="excluir_conta">
+    <div id="excluir_conta" style="display: none;">
         <h1>Deseja excluir sua conta?</h1>
         <br>
-        <button onclick="ConfirmDel()">Sim</button>
-        <button onclick="fechaDelr()">Não</button>
-
+        <button class="confimar_but" onclick="ConfirmDel()">Sim</button>
+        <button  class="excluir_but" onclick="fechaDelr()">Não</button>
     </div>
 
-    <div id="autenticar_excluir">
+    <div id="autenticar_excluir" style="display: none;">
         <h1>Digite sua senha para confirmar a exclusão da conta</h1>
-        <input type="text" id="input_senha_excluir">
-        <br>
-        <br>
-        <button onclick="Deletar()">Confirmar</button>
-        <button onclick="fechaDelr()">Cancelar</button>
+        <input type="password" id="input_senha_excluir">
+        <br><br>
+        <button class="confimar_but" onclick="Deletar()">Confirmar</button>
+        <button class="excluir_but" onclick="fechaDelr()">Cancelar</button>
         <br>
         <div id="error_mensagem"></div>
     </div>
-    <br>
-    <br>
-    <a href="perfil.html">Voltar ao perfil</a>
 </body>
 
-</html>
+
+
 
 <script>
 
@@ -75,7 +108,6 @@
 
 
     input_nome.value = sessionStorage.NOME_USUARIO;
-    input_email.value = sessionStorage.EMAIL_USUARIO;
     input_senha.value = sessionStorage.Senha_USUARIO;
 
     div_confirmacao.style.display = "none";
@@ -89,15 +121,16 @@
     function verSenha() {
         if (input_senha.type == "password") {
             input_senha.type = "text";
+            imagem_olho.src = "assets/icon/olho_aberto.png"
         } else {
             input_senha.type = "password";
+            imagem_olho.src = "assets/icon/olho_fechado.png"
         }
     }
     function atualizar() {
 
 
         var nomeVar = input_nome.value;
-        var emailVar = input_email.value;
         var senhaVar = input_senha.value;
 
 
@@ -109,7 +142,6 @@
             },
             body: JSON.stringify({
                 nomeServer: nomeVar,
-                emailServer: emailVar,
                 senhaServer: senhaVar,
                 idUserServer: sessionStorage.ID_USUARIO
             })
@@ -120,8 +152,6 @@
                 setTimeout(() => {
 
                     console.log("Atualizado com sucesso!");
-                    sessionStorage.EMAIL_USUARIO = emailVar;
-                    console.log("EMAIL: " + sessionStorage.EMAIL_USUARIO);
                     sessionStorage.NOME_USUARIO = nomeVar;
                     console.log("NOME: " + sessionStorage.NOME_USUARIO);
                     sessionStorage.Senha_USUARIO = senhaVar;

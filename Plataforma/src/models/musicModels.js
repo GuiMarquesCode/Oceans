@@ -52,7 +52,7 @@ function cadastrar(sentimento, historia, idMusica, idArtista, artista, Foto_arti
 
 
 function postagens(idUsuario) {
-    var instrucaoSql = `SELECT Postagem.Sentimento as Sentimento, Artista.Nome as Artista ,Postagem.Historia AS Historia, Musica.Titulo AS Musica, 
+    var instrucaoSql = `SELECT Postagem.idPostagem ,Postagem.Sentimento as Sentimento, Artista.Nome as Artista ,Postagem.Historia AS Historia, Musica.Titulo AS Musica, 
 Album.foto as Foto, Musica.Preview,  DATE_FORMAT(Postagem.DataPostagem, '%d/%m/%Y %H:%i') as "Data"
 FROM Postagem JOIN Usuario ON Postagem.FkUsuario = Usuario.idUsuario JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
 JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON Album.FkArtista = Artista.idArtista WHERE Usuario.idUsuario = ${idUsuario} ORDER BY Postagem.DataPostagem DESC`;
@@ -61,9 +61,17 @@ JOIN Album ON Musica.FkAlbum = Album.idAlbum JOIN Artista ON Album.FkArtista = A
 }
 
 
+function excluir_postagem(id_post) {
+    var instrucaoSql = `DELETE FROM Postagem WHERE idPostagem = ${id_post}`;
+    console.log("Executando a instrução do SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);''
+
+}
+
 
 
 module.exports = {
     cadastrar,
-    postagens
+    postagens,
+    excluir_postagem
 }

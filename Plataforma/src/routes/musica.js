@@ -64,6 +64,10 @@ rota.get('/postagens/:idusuario', function (req, res) {
     musicController.postagens(req, res);
 });
 
+rota.delete('/excluir_postagem/:id_post', function (req, res) {
+    musicController.excluir_postagem(req, res);
+});
+
 
 
 module.exports = rota;

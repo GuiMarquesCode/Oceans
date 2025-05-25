@@ -28,7 +28,12 @@
 
     <main>
 
-        <div class="historia">
+        <div class="indicacao" id="div_indicacao">
+            <h1>Começe pesquisando por uma música para cadastrar sua história!</h1>
+        </div>
+
+
+        <div class="historia" id="div_tudo">
             <div class="sentimento">
                 <h1>Sentimento:</h1>
                 <select id="input_sentimento">
@@ -66,23 +71,23 @@
 
             <div class="historias">
                 <h1>História:</h1>
-                <textarea name="" id="input_historia"></textarea>
+                <textarea id="input_historia"></textarea>
             </div>
 
             <button onclick="cadastrar()">Cadastrar</button>
 
         </div>
 
-        <div class="info_artista">
+        <div class="info_artista" id="info_artista">
             <img id="imagem_artista" src="assets/imgs/Hollywoods_Bleeding.png">
             <div>
                 <div>
-                    <h1><span id="Nome_musica">Goodbyes</span> - <span id="Nome_artista">PostMalone</span></h1>
+                    <h1><span id="Nome_musica">Goodbyes</span> - <span id="Nome_artista_selecionado">PostMalone</span></h1>
                     <p><span id="Nome_album">Holliwoodbleedin</span> (<span id="data">2019</span>)</p>
                 </div>
 
-                <audio id="audioPreview" controls>
-                    <source id="audio_preciew" src="" type="audio/mpeg">
+                <audio id="audio_preview" src="" autoplay controls>
+                    <source type="audio/mpeg">
                     Seu navegador não suporta o elemento de áudio.
                 </audio>
 
@@ -96,85 +101,6 @@
 </body>
 
 </html>
-
-
-
-
-<!--     <input type="text" id="input_pesquisa" placeholder="Digite o nome da música">
-    <button onclick="chamarAPI()">Pesquisar</button>
-    <br><br><br><br>
-    <div class="formulario_musica">
-
-        <div id="info_musica">
-
-        </div>
-
-        <div id="inputs">
-
-
-            <div class="campo">
-                <span>Sentimento:</span>
-                <select id="input_sentimento">
-                    <option selected disabled value="">Selecione um sentimento</option>
-                    <option value="Alegria">Alegria</option>
-                    <option value="Amor">Amor</option>
-                    <option value="Ansiedade">Ansiedade</option>
-                    <option value="Arrependimento">Arrependimento</option>
-                    <option value="Calma">Calma</option>
-                    <option value="Ciúmes">Ciúmes</option>
-                    <option value="Confusão">Confusão</option>
-                    <option value="Curiosidade">Curiosidade</option>
-                    <option value="Determinação">Determinação</option>
-                    <option value="Desânimo">Desânimo</option>
-                    <option value="Euforia">Euforia</option>
-                    <option value="Esperança">Esperança</option>
-                    <option value="Frustração">Frustração</option>
-                    <option value="Felicidade">Felicidade</option>
-                    <option value="Gratidão">Gratidão</option>
-                    <option value="Insegurança">Insegurança</option>
-                    <option value="Inspiração">Inspiração</option>
-                    <option value="Melancolia">Melancolia</option>
-                    <option value="Medo">Medo</option>
-                    <option value="Nostalgia">Nostalgia</option>
-                    <option value="Orgulho">Orgulho</option>
-                    <option value="Paz">Paz</option>
-                    <option value="Raiva">Raiva</option>
-                    <option value="Reflexão">Reflexão</option>
-                    <option value="Saudade">Saudade</option>
-                    <option value="Solidão">Solidão</option>
-                    <option value="Surpresa">Surpresa</option>
-                    <option value="Tristeza">Tristeza</option>
-                </select>
-
-            </div>
-            <br><br>
-            <div class="campo">
-                <span>Historia:</span>
-                <textarea id="input_historia"></textarea>
-
-            </div>
-            <br><br>
-            <div id="img_album"></div>
-            <br><br>
-        </div>
-
-        <button onclick="cadastrar()">Cadastrar Música</button>
-        <br>
-        <br>
-
-        <a href="index.html">Voltar ao menu</a>
-    </div>
- -->
-
-
-
-
-
-
-
-
-
-
 <script>
 
     var Preview_Musica = '';
@@ -195,6 +121,9 @@
     /* Variavel do usuario logado */
     var idUser = parseInt(sessionStorage.ID_USUARIO);
 
+
+    div_tudo.style.display = "none"
+    info_artista.style.display = "none"
     async function chamarAPI() {
 
 
@@ -246,12 +175,17 @@
                 imagem_artista.src = Foto_Album;
 
                 Nome_musica.innerHTML = Titulo;
-                Nome_artista.innerHTML = Nome_artista;
+                Nome_artista_selecionado.innerHTML = Nome_artista;
                 Nome_album.innerHTML = Titulo_Album;
                 data.innerHTML = Data_Lancamento;
-                audio_preciew.src = Preview_Musica;
+                audio_preview.src = Preview_Musica;
 
                 console.log(Preview_Musica, Titulo, idMusica, idArtista, Nome_artista, Foto_artista, Titulo_Album, Data_Lancamento, Foto_Album, idAlbum);
+
+
+                div_indicacao.style.display = "none"
+                div_tudo.style.display = "flex"
+                info_artista.style.display = "flex"
 
             } else {
                 console.error('Erro ao achar a música')
