@@ -55,11 +55,42 @@ Album.FkArtista = Artista.idArtista WHERE Artista.idArtista = ${idArtista}
 
 }
 
+
+function sentimentos_artista(idArtista) {
+    var instrucaoSql = `
+         SELECT Artista.Nome, Postagem.Sentimento, COUNT(Postagem.Sentimento) as Sentimentos
+        FROM Postagem JOIN Musica ON Postagem.FkMusica = Musica.idMusica 
+        JOIN Album ON Musica.FkAlbum = Album.idAlbum 
+        JOIN Artista ON Album.FkArtista = Artista.idArtista  WHERE Artista.idArtista = ${idArtista}
+        GROUP BY Artista.Nome , Postagem.Sentimento ORDER BY COUNT(Postagem.Sentimento) DESC ;
+
+       
+    `;
+    console.log("Executando a instrução do SQL : \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+
+
+}
+
+
+function postagens_sobre_artista(idArtista) {
+    var instrucaoSql = `
+        SELECT P.Sentimento, P.Historia, DATE_FORMAT(P.DataPostagem, '%d/%m/%Y %H:%i') as "Data", M.Titulo, M.preview, A.Foto, Ar.Nome
+       FROM Postagem AS P JOIN Musica AS M ON P.FkMusica = M.idMusica JOIN Album AS A ON M.FkAlbum = A.idAlbum
+       JOIN Artista AS Ar ON A.FkArtista = Ar.idArtista WHERE Ar.idArtista = ${idArtista} ORDER BY RAND() LIMIT 2; 
+    `;
+    console.log("Executando a instrução do SQL : \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+
+}
+
 module.exports = {
     dados_artista,
+    sentimentos_artista,
     postagens_artista,
     ranking_artista,
     postagens_gerais,
-    principais_musicas
+    principais_musicas,
+    postagens_sobre_artista
 
 }

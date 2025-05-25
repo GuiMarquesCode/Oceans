@@ -80,10 +80,50 @@ function principais_musicas(req, res) {
     });
 }
 
+
+function sentimentos_artista (req, res) {
+
+    var idArtista = req.params.idArtista;
+
+    interactionModels.sentimentos_artista(idArtista).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as postagens.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+
+function postagens_sobre_artista (req, res) {
+
+    var idArtista = req.params.idArtista;
+
+    interactionModels.postagens_sobre_artista(idArtista).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhuma postagem encontrada!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as postagens.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+
+
 module.exports = {
     dados_artista,
+    sentimentos_artista,
     postagens_artista,
     postagens_gerais,
     ranking_artista,
-    principais_musicas
+    principais_musicas,
+    postagens_sobre_artista
 }

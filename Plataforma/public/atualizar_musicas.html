@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button onclick="buscar()">Buscar Músicas</button>
+
+    <button onclick="Atualizar()">atualizar</button>
+
+    <div id="div_mensagem"
+        style="background-color: gray; display: flex; width: 100%; gap: 3vh; flex-direction: column; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+    var dados = {};
+
+    async function buscar() {
+        const resp = await fetch(`/atualizar/buscar_musica/`);
+        const resp_musica = await resp.json();
+
+        var mensagem = "";
+
+
+        for (var i = 0; i < resp_musica.length; i++) {
+            mensagem += `
+                <div>
+                    <h1>${resp_musica[i].Titulo}</h1>
+                    <audio id="audioPreview" controls>
+                                        <source src="${resp_musica[i].preview}" type="audio/mpeg">
+                                        Seu navegador não suporta o elemento de áudio.
+                                    </audio>
+                </div>
+            `
+        }
+        div_mensagem.innerHTML = mensagem;
+
+        dados = resp_musica;
+        console.log(resp_musica)
+    }
+
+
+
+
+    async function Atualizar() {
+
+        const resp = await fetch(`/atualizar/buscar_musica/`);
+        const resp_musica = await resp.json();
+        console.log(resp_musica[0].idMusica)
+
+        for (var i = 0; i < resp_musica.length; i++) {
+
+            const urlMusica = await fetch(`/musica/pesquisar2/${(resp_musica[i].idMusica)}`);
+            const dados_Musica = await urlMusica.json();
+            var nova_preview = dados_Musica.preview;
+
+
+            await fetch("/atualizar/atualizar_musica", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nova_previewServer: nova_preview,
+                    idMusicaServer: resp_musica[i].idMusica,
+                    
+                })
+            }).then(function (resposta) {
+                console.log("resposta: ", resposta);
+                console.log("Musica atualizada:" + resp_musica[i].Titulo);
+            }).catch(function (erro) {
+                console.log(erro);
+            });
+        }
+    }
+
+</script>
