@@ -103,14 +103,19 @@
 
 
             </div>
-
-
-
         </div>
 
     </div>
 
 
+    <div class="ranking_e_indicacao">
+
+        <canvas id="myChartRanking"></canvas>
+
+
+        <div></div>
+
+    </div>
 
 
 </body>
@@ -132,11 +137,9 @@
 
     async function carregarMusica() {
 
-        /* Puxar o id Do artista via api */
         const resp = await fetch(`/musica/pesquisar?q=${artista}`);
         const dados = await resp.json();
 
-        // Proteção para dados.data vazio ou sem artist
         if (!dados.data || dados.data.length === 0 || !dados.data[0].artist) {
             alert("Artista não encontrado!");
             return;
@@ -146,11 +149,10 @@
 
         const respArtista = await fetch(`/musica/pesquisar_dados_artista/${idArtista}`);
         const estatistcas_artista = await fetch(`/interaction/postagens_artista/${idArtista}`);
-        const ranking_artista = await fetch(`/interaction/ranking_artista/`);
         const top_3_musicas = await fetch(`/interaction/principais_musicas/${idArtista}`);
 
-        // Proteção para resposta vazia
-        let resp_top_sentimentos = "";
+
+        var resp_top_sentimentos = "";
         try {
             resp_top_sentimentos = await top_3_musicas.text();
             if (resp_top_sentimentos) {
@@ -162,21 +164,15 @@
             resp_top_sentimentos = [];
         }
 
-        let resp_estatistcas = [];
+        var resp_estatistcas = [];
         try {
             resp_estatistcas = await estatistcas_artista.json();
         } catch {
             resp_estatistcas = [];
         }
 
-        let ranking_resposta = [];
-        try {
-            ranking_resposta = await ranking_artista.json();
-        } catch {
-            ranking_resposta = [];
-        }
 
-        let dadosArtista = {};
+        var dadosArtista = {};
         try {
             dadosArtista = await respArtista.json();
         } catch {
@@ -184,7 +180,7 @@
         }
 
         const resp_principais_sentimentos = await fetch(`/interaction/sentimentos_artista/${idArtista}`);
-        let sentimento = [];
+        var sentimento = [];
         try {
             sentimento = await resp_principais_sentimentos.json();
         } catch {
@@ -192,23 +188,20 @@
         }
 
         const resp_2_post = await fetch(`/interaction/postagens_sobre_artista/${idArtista}`);
-        let random_2_post = [];
+        var random_2_post = [];
         try {
             random_2_post = await resp_2_post.json();
         } catch {
             random_2_post = [];
         }
 
-        // Proteção para dadosArtista vazio
         if (!dadosArtista || !dadosArtista.picture_medium) {
             imagem_artista.src = "assets/imgs/loading.gif";
             Nome_Artista.innerHTML = "Artista não encontrado";
             info_estatisticas.innerHTML = "";
             loading_img.style.display = "none";
-            return;
         }
 
-        /* Definição de dados no html */
         var mensagem_citacoes = "<p>Top músicas mais citadas:</p>";
 
         imagem_artista.src = dadosArtista.picture_medium;
@@ -218,7 +211,6 @@
         loading_img.style.display = "none"
 
 
-        /* Musicas e seus sentimentos */
         if (resp_top_sentimentos.length == 0) {
             mensagem_citacoes += "<span>Ainda não existe nenhuma postagem cadastrada!</span>"
 
@@ -313,6 +305,12 @@
 
 
 
+        /* Carregar o gráfico de ranking */
+
+
+        carregar_ranking(dadosArtista.name, resp_estatistcas[0].Num_Post, idArtista)
+
+
 
     }
 
@@ -320,10 +318,9 @@
         if (!sentimento || sentimento.length === 0) {
             grafico_e_post.style.display = "none";
             div_grafico.innerHTML = "<h2>Dados insuficientes</h2>";
-           
+
         } else {
             grafico_e_post.style.display = "flex";
-            console.log(`sentimentos : ${sentimento}`)
             const ctx = document.getElementById('myChart');
 
             var cores = ['#143737', '#2F6161', '#9EC3BC', '#96CECE']
@@ -534,7 +531,67 @@
 
 
 
+    async function carregar_ranking(nomeArtista, qtdPost, id) {
 
+        var lista_artistas = [];
+        var lista_qtd_post = [];
+        var lista_cores = ['#294355', '#9EC3BC', '#143737', '#3CA2E8'];
+        var lista_posicoes = [1, 2, 3]
+
+        const resp = await fetch('/interaction/ranking_artista');
+        const resp_ranking = await resp.json();
+        console.log(resp_ranking)
+        var existe = false;
+
+
+
+        for (var i = 0; i < resp_ranking.length; i++) {
+            lista_artistas.push(resp_ranking[i].Nome)
+            lista_qtd_post.push(resp_ranking[i].Num_Post)
+
+            if (resp_ranking[i].idArtista == id) {
+                existe = true
+            }
+        }
+
+        if (existe == false) {
+            lista_artistas.push(nomeArtista);
+            lista_qtd_post.push(qtdPost);
+            var lista_posicoes = [1, 2, 3, 4]
+
+        }
+
+
+
+        const ctx = document.getElementById('myChartRanking');
+
+        const ranking = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: lista_artistas,
+                datasets: [{
+                    label: 'Quantidade de posts',
+                    data: lista_qtd_post,
+                    backgroundColor: lista_cores
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ranking dos artistas'
+                        }
+                    }
+                }
+            }
+        });
+
+        ranking.canvas.parentNode.style.height = '300px';
+        ranking.canvas.parentNode.style.width = '800px';
+        ranking.canvas.parentNode.style.padding = '0'
+    }
 
 
 
@@ -546,26 +603,7 @@
     }
 
 
-    /*     new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: [1],
-                datasets: [{
-                    label: 'Quantidade',
-                    data: [1],
-                    backgroundColor: ['#143737'],
-    
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        }); */
+
 
 
 </script>
