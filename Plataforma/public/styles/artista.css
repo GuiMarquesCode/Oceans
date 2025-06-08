@@ -458,6 +458,11 @@ audio::content {
 
 .ranking_e_indicacao{
     display: flex;
+    background-image: url(../assets/icon/circulos-reverso.png);
+    background-position-x: 140vh;
+    background-position-y: 5git 0vh;
+    background-size: 100vh;
+    background-repeat: no-repeat;
     width: 100%;
     justify-content: space-around;
 }

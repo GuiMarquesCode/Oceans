@@ -118,7 +118,7 @@
 
 
         <section>
-            <h1>Conheça um pouco mais de <span id="Nome_do_artista"></span></h1>
+            <h1>Conheça um pouco mais de <span id="Nome_do_artista_ranking"></span></h1>
             <div id="Listar_musicas" class="listas_as_musicas">
     
             </div>
@@ -218,10 +218,10 @@
 
         imagem_artista.src = dadosArtista.picture_medium;
         Nome_Artista.innerHTML = dadosArtista.name;
-        Nome_do_artista.innerHTML = dadosArtista.name; Nome_do_artista
+        Nome_do_artista.innerHTML = dadosArtista.name; 
         info_estatisticas.innerHTML = `Estatisticas de ${dadosArtista.name}`;
         loading_img.style.display = "none"
-
+        Nome_do_artista_ranking.innerHTML = dadosArtista.name;
 
         if (resp_top_sentimentos.length == 0) {
             mensagem_citacoes += "<span>Ainda não existe nenhuma postagem cadastrada!</span>"
