@@ -339,9 +339,9 @@
             window.location = "./artista.html";
 
         } else {
-            sessionStorage.id_Perfil = idPerfil;
-            window.location = "./perfil_pesquisa.html";
-
+            sessionStorage.id_Perfil =await idPerfil;
+          console.log(idPerfil)
+             window.location = "./perfil_pesquisa.html";
         }
     }
 
