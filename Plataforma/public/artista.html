@@ -108,12 +108,14 @@
     </div>
 
 
-    <div class="ranking_e_indicacao">
+    <div class="ranking_e_indicacao" style="display: flex;">
 
-        <canvas id="myChartRanking"></canvas>
+        <canvas id="myChartRanking" style="padding: 0;"></canvas>
 
 
-        <div></div>
+        <div id="Listar_musicas" class="listas_as_musicas">
+
+        </div>
 
     </div>
 
@@ -133,6 +135,8 @@
     const ctx = document.getElementById('myChart');
     var cores = ['#143737', '#2F6161', '#9EC3BC', '#96CECE']
     var artista = sessionStorage.Dado_Artista;
+    var limite_musicas = 0;
+
 
 
     async function carregarMusica() {
@@ -311,7 +315,7 @@
         carregar_ranking(dadosArtista.name, resp_estatistcas[0].Num_Post, idArtista)
 
 
-
+        listar_musicas(idArtista)
     }
 
     function carregar_grafico(sentimento) {
@@ -588,13 +592,47 @@
             }
         });
 
-        ranking.canvas.parentNode.style.height = '300px';
-        ranking.canvas.parentNode.style.width = '800px';
+        ranking.canvas.parentNode.style.width = '100vh';
         ranking.canvas.parentNode.style.padding = '0'
     }
 
 
 
+    async function listar_musicas(id) {
+        const resp = await fetch(`/musica/pesquisar_musica_artista/${id}`);
+        const resp_dados = await resp.json();
+        var mensagem = '';
+        console.log(resp_dados.data)
+
+    
+        for(var i = limite_musicas; i < limite_musicas+3 ; i++){
+            mensagem += `
+                <div> 
+                    <img src = "${resp_dados.data[i].album.cover_medium}">
+                        <div>
+                        
+                            <h1>${resp_dados.data[i].title}</h1>
+                             <audio id="audioPreview" controls>
+                                <source src="${resp_dados.data[i].preview}" type="audio/mpeg">
+                                Seu navegador não suporta o postagens[aleatorio]o de áudio.
+                            </audio>
+                        </div>
+                    </div>
+            `
+        }
+
+        mensagem += `<button onclick ="verMaisMusicas(${id})">Ver mais</button>`;
+
+        Listar_musicas.innerHTML = mensagem
+        
+
+    }
+
+
+    function verMaisMusicas(id){
+        limite_musicas = limite_musicas + 3;
+        listar_musicas(id) ; 
+    }
 
 
     function carregar_artista() {
