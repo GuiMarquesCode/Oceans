@@ -47,7 +47,7 @@
         <div>
             <h1>Filtros:</h1>
             <select id="select_postagens" onchange="filtrar()">
-                <option selected disabled value="#">Sentimento</option>
+                <option selected  value="#">Sentimento</option>
 
             </select>
         </div>
@@ -58,7 +58,7 @@
 
     </div>
 
-    <button class="CarregarMais" onclick="aumentar_limite()">Carregar Mais</button>
+    <button class="CarregarMais" id="button_Ver_Mais" onclick="aumentar_limite()">Carregar Mais</button>
 
 </body>
 
@@ -74,7 +74,9 @@
     var postagem_geral = {};
 
     var tamanho_post = 0;
+
     function aumentar_limite() {
+        console.log(limite_post)
 
         if (limite_post <= tamanho_post) {
             limite_post += 2;
@@ -98,9 +100,10 @@
         const resp = await fetch(`/interaction/postagens_gerais/`);
 
         if (resp.ok) {
-
             const postagens_gerais = await resp.json();
             tamanho_post = postagens_gerais.length;
+
+
             const resp_perfis = await fetch(`interaction/info_perfis`)
             perfis = await resp_perfis.json();
 
@@ -148,11 +151,18 @@
                 `;
             };
 
+            var Lista_select_sentimento = []
+
             for (var j = 0; j < postagens_gerais.length; j++) {
 
-                select_postagens.innerHTML += `
-                 <option>${postagens_gerais[j].Sentimento}</option>
-                `;
+                if(!Lista_select_sentimento.includes(postagens_gerais[j].Sentimento)){
+                    select_postagens.innerHTML += `
+                     <option>${postagens_gerais[j].Sentimento}</option>
+                    `;
+
+                    Lista_select_sentimento.push(postagens_gerais[j].Sentimento)
+                }
+
 
             }
 
@@ -170,49 +180,99 @@
     function filtrar() {
         var sentimento_selecionado = select_postagens.value;
         var mensagem = ""
-        for (i = 0; i <= limite_post; i++) {
+    
 
-            if (postagem_geral[i].Sentimento == sentimento_selecionado) {
+        if(sentimento_selecionado == '#'){
+            for (i = 0; i < limite_post; i++) {
                 mensagem += `
-                                    <div class="postagem">
-                        <div class="nome">
-                            <img src="https://api.dicebear.com/8.x/initials/svg?seed=${postagem_geral[i].Nome}&backgroundColor=2c5c5c">
-                            <h1>- ${postagem_geral[i].Nome}</h1>
-                        </div>
-    
-                        <div class="infos">
-                            <div class="cartao">
-                                <div class="esquerdo">
-                                    <h1>Sentimento: <span>${postagem_geral[i].Sentimento}</span></h1>
-                                    <label>
-                                        <h1><span>História:</span></h1>
-                                        <div>
-                                            <p>${postagem_geral[i].Historia}</p>
-                                        </div>
-                                    </label>
+                                <div class="postagem">
+                    <div class="nome">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=${postagens_gerais[i].Nome}&backgroundColor=2c5c5c">
+                        <h1>- ${postagens_gerais[i].Nome}</h1>
+                    </div>
+
+                    <div class="infos">
+                        <div class="cartao">
+                            <div class="esquerdo">
+                                <h1>Sentimento: <span>${postagens_gerais[i].Sentimento}</span></h1>
+                                <label>
+                                    <h1><span>História:</span></h1>
+                                    <div>
+                                        <p>${postagens_gerais[i].Historia}</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="direito">
+                                <div class="foto_nome">
+                                    <img src="${postagens_gerais[i].Foto}">
+                                    <h1>${postagens_gerais[i].Musica} - ${postagens_gerais[i].Artista}</h1>
                                 </div>
-    
-                                <div class="direito">
-                                    <div class="foto_nome">
-                                        <img src="${postagem_geral[i].Foto}">
-                                        <h1>${postagem_geral[i].Musica} - ${postagem_geral[i].Artista}</h1>
-                                    </div>
-    
-                                    <div class="inputs_musica">
-                                        <audio id="audioPreview" controls>
-                                            <source src="${postagem_geral[i].Preview}" type="audio/mpeg">
-                                            Seu navegador não suporta o elemento de áudio.
-                                        </audio>
-    
-                                        <p>${postagem_geral[i].Data}</p>
-                                    </div>
+
+                                <div class="inputs_musica">
+                                    <audio id="audioPreview" controls>
+                                        <source src="${postagens_gerais[i].Preview}" type="audio/mpeg">
+                                        Seu navegador não suporta o elemento de áudio.
+                                    </audio>
+
+                                    <p>${postagens_gerais[i].Data}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-    
-                    `;
-            }
+                </div>
+
+                `;
+            };
+
+        }else{
+
+            for (i = 0; i <= limite_post; i++) {
+                
+
+                if (postagem_geral[i].Sentimento == sentimento_selecionado) {
+                    mensagem += `
+                                        <div class="postagem">
+                            <div class="nome">
+                                <img src="https://api.dicebear.com/8.x/initials/svg?seed=${postagem_geral[i].Nome}&backgroundColor=2c5c5c">
+                                <h1>- ${postagem_geral[i].Nome}</h1>
+                            </div>
+        
+                            <div class="infos">
+                                <div class="cartao">
+                                    <div class="esquerdo">
+                                        <h1>Sentimento: <span>${postagem_geral[i].Sentimento}</span></h1>
+                                        <label>
+                                            <h1><span>História:</span></h1>
+                                            <div>
+                                                <p>${postagem_geral[i].Historia}</p>
+                                            </div>
+                                        </label>
+                                    </div>
+        
+                                    <div class="direito">
+                                        <div class="foto_nome">
+                                            <img src="${postagem_geral[i].Foto}">
+                                            <h1>${postagem_geral[i].Musica} - ${postagem_geral[i].Artista}</h1>
+                                        </div>
+        
+                                        <div class="inputs_musica">
+                                            <audio id="audioPreview" controls>
+                                                <source src="${postagem_geral[i].Preview}" type="audio/mpeg">
+                                                Seu navegador não suporta o elemento de áudio.
+                                            </audio>
+        
+                                            <p>${postagem_geral[i].Data}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        `;
+                }
+        }
+
 
         }
         div_postagem_geral.innerHTML = mensagem;
