@@ -308,8 +308,49 @@ nav {
 
 
 
+#pesquisa_usuario{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-top: 35vh;
+    background-color: white;
+    overflow-x: hidden;
+    max-height: 40vh;
+    width: 50vh;
+    height: 30vh;
+    gap: 1vh;
+    overflow-y: auto;
+    border-radius: 0;
+    
+}
 
+#pesquisa_usuario div{
+    display: flex;
+    position: relative;
+    width: 70%;
+    height: 30vh;
+    gap: 2vh;
+    justify-content: space-between;
+    height: auto;
+    align-items: center;
+    
+    background-color: #D9D9D9;
+}
 
+#pesquisa_usuario div h1{
+    font-size: 3vh;
+    font-weight: bold;
+    align-self: center;
+    color: #2c5c5c;
+    text-align: center;
+    
+    margin-right: 10vh;
+    align-items: center;
+}
+#pesquisa_usuario div img{
+    height: 10vh;
+    width: 10vh;
+}
 
 
 

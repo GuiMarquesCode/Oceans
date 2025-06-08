@@ -84,8 +84,19 @@ function postagens_sobre_artista(idArtista) {
 
 }
 
+
+
+function info_perfis(){
+       var instrucaoSql = `
+        SELECT Nome, idUsuario FROM Usuario;
+    `;
+    console.log("Executando a instrução do SQL : \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     dados_artista,
+    info_perfis,
     sentimentos_artista,
     postagens_artista,
     ranking_artista,

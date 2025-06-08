@@ -39,6 +39,11 @@ rota.get('/postagens_sobre_artista/:idArtista', function(req , res){
 });
 
 
+rota.get('/info_perfis/', function(req , res){
+    interactionController.info_perfis(req , res);
+});
+
+
 
 
 module.exports = rota;

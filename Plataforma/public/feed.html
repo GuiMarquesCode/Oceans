@@ -23,10 +23,14 @@
         <div class="pesquisa">
             <div>
                 <input type="text" placeholder=" Ex: Travis" id="input_artista">
-                <img src="assets/icon/pesquisar-lupa.png" onclick="carregar_artista()">
+                <input type="text" placeholder=" Escreva o nome do usuário" id="input_Perfil" oninput="buscar_perfil()">
+                <img src="assets/icon/pesquisar-lupa.png" onclick="carregar_Pagina()">
             </div>
 
-            <select id="input_selecao">
+            <div id="pesquisa_usuario">
+            </div>
+
+            <select id="input_selecao" onchange="verificar_selecao()">
                 <option selected>Artista</option>
                 <option>Usuário</option>
             </select>
@@ -42,10 +46,9 @@
 
         <div>
             <h1>Filtros:</h1>
-            <select id="" onchange="filtrar()">
+            <select id="select_postagens" onchange="filtrar()">
                 <option selected disabled value="#">Sentimento</option>
-                <option>Felicidade</option>
-                <option>Tristeza</option>
+
             </select>
         </div>
     </div>
@@ -63,12 +66,23 @@
 
 <script>
 
-    var limite_post = 1;
+
+    var perfis = {}
+    var limite_post = 2;
+
+
+    var postagem_geral = {};
+
     var tamanho_post = 0;
     function aumentar_limite() {
+
         if (limite_post <= tamanho_post) {
             limite_post += 2;
-            postagensGerais();
+            if (select_postagens.value != "#") {
+                filtrar()
+            } else {
+                postagensGerais();
+            }
         } else {
             button_Ver_Mais.style.display = 'none';
         }
@@ -87,10 +101,12 @@
 
             const postagens_gerais = await resp.json();
             tamanho_post = postagens_gerais.length;
+            const resp_perfis = await fetch(`interaction/info_perfis`)
+            perfis = await resp_perfis.json();
 
             console.log(postagens_gerais);
 
-            for (i = 0; i <= limite_post; i++) {
+            for (i = 0; i < limite_post; i++) {
                 mensagem += `
                                 <div class="postagem">
                     <div class="nome">
@@ -132,6 +148,16 @@
                 `;
             };
 
+            for (var j = 0; j < postagens_gerais.length; j++) {
+
+                select_postagens.innerHTML += `
+                 <option>${postagens_gerais[j].Sentimento}</option>
+                `;
+
+            }
+
+            postagem_geral = postagens_gerais;
+
             div_postagem_geral.innerHTML = mensagem;
 
         } else {
@@ -141,10 +167,125 @@
 
     }
 
+    function filtrar() {
+        var sentimento_selecionado = select_postagens.value;
+        var mensagem = ""
+        for (i = 0; i <= limite_post; i++) {
 
-    async function carregar_artista() {
-        sessionStorage.Dado_Artista = input_artista.value;
-        window.location = "./artista.html";
+            if (postagem_geral[i].Sentimento == sentimento_selecionado) {
+                mensagem += `
+                                    <div class="postagem">
+                        <div class="nome">
+                            <img src="https://api.dicebear.com/8.x/initials/svg?seed=${postagem_geral[i].Nome}&backgroundColor=2c5c5c">
+                            <h1>- ${postagem_geral[i].Nome}</h1>
+                        </div>
+    
+                        <div class="infos">
+                            <div class="cartao">
+                                <div class="esquerdo">
+                                    <h1>Sentimento: <span>${postagem_geral[i].Sentimento}</span></h1>
+                                    <label>
+                                        <h1><span>História:</span></h1>
+                                        <div>
+                                            <p>${postagem_geral[i].Historia}</p>
+                                        </div>
+                                    </label>
+                                </div>
+    
+                                <div class="direito">
+                                    <div class="foto_nome">
+                                        <img src="${postagem_geral[i].Foto}">
+                                        <h1>${postagem_geral[i].Musica} - ${postagem_geral[i].Artista}</h1>
+                                    </div>
+    
+                                    <div class="inputs_musica">
+                                        <audio id="audioPreview" controls>
+                                            <source src="${postagem_geral[i].Preview}" type="audio/mpeg">
+                                            Seu navegador não suporta o elemento de áudio.
+                                        </audio>
+    
+                                        <p>${postagem_geral[i].Data}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    `;
+            }
+
+        }
+        div_postagem_geral.innerHTML = mensagem;
+
+
+
     }
+
+
+
+    function verificar_selecao() {
+        if (input_selecao.value == "Artista") {
+            input_Perfil.style.display = "none"
+            input_artista.style.display = "block"
+            input_artista.value = ""
+        } else {
+            input_Perfil.style.display = "block"
+            input_artista.style.display = "none"
+            input_Perfil.value = "";
+        }
+    }
+    pesquisa_usuario.style.display = "none"
+    verificar_selecao();
+
+    function buscar_perfil() {
+        var mensagem = ""
+        pesquisa_usuario.style.display = "flex";
+        var contador = 0;
+        for (var i = 0; i < perfis.length; i++) {
+            if(perfis[i].Nome.includes(input_Perfil.value)){
+                mensagem += `
+                
+                        <div onclick="carregar_Pagina(${perfis[i].idUsuario})">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=${perfis[i].Nome}&backgroundColor=2c5c5c"" alt="">
+                        <h1>${perfis[i].Nome}</h1>
+                    </div>
+                `;
+                contador++;
+            }
+        }
+        if(contador == 0){
+            mensagem += `
+                
+             <div>
+                    <h1>Nenhum resultado encontrado!</h1>     
+                    </div>
+                `;
+        }
+        if(input_Perfil.value == ""){
+              pesquisa_usuario.style.display = "none";
+        }
+
+        pesquisa_usuario.innerHTML = mensagem
+
+    }
+
+
+
+
+
+    async function carregar_Pagina(idPerfil) {
+        if (input_selecao.value == "Artista") {
+            sessionStorage.Dado_Artista = input_artista.value;
+            window.location = "./artista.html";
+
+        } else {
+            sessionStorage.id_Perfil = idPerfil;
+            window.location = "./perfil_pesquisa.html";
+
+        }
+    }
+
+
+
 
 </script>

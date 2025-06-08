@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceans | Dashboard</title>
+    <link rel="stylesheet" href="styles/perfil_usuario.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="infoPerfil">
+
+        <nav>
+            <a href="feed.html">
+                <img src="assets/icon/casa.png">
+            </a>
+
+        </nav>
+
+        <div class="Perfil">
+            <img id="imagem_perfil" src="assets/icon/icone_perfil.png" style="border-radius: 50%; margin-left: 3vh;">
+
+            <div class="direita">
+                <h1><span id="nome_user"></span>, atualmente tem o sentimento <br> mais frequente <span
+                        id="sentimento_usuario"></span>!</h1>
+
+                <h1>Tem um <span>total</span> de: <br> <span id="Qtd_Post"></span> postagens.</h1>
+
+                <h1>E o(a) <span>artista</span> que mais desperta <span>sentimentos</span> nele(a) é: <br> <span
+                        id="artista_fav"></span></h1>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="postagens">
+
+        <div class="titulo_postagens">
+            <h1>Suas postagens:</h1>
+        </div>
+
+        <div class="sem_postagem" id="sem_postagem" style="width: 100%; display: flex;
+            align-items: center; justify-content: center;  text-align: center;">
+            <h1>Ainda não fez postagens</h1>
+
+        </div>
+
+        <div class="list_post" id="div_postagens">
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+
+    async function buscarDados() {
+        sem_postagem.style.display = "none"
+        var idPerfil = sessionStorage.id_Perfil;
+
+        nome_user.innerHTML = sessionStorage.NOME_USUARIO;
+
+        const respSentimento = await fetch(`/dash_user/sentimento/${idPerfil}`);
+        const respQtdPostagem = await fetch(`/dash_user/qtd_Postagem/${idPerfil}`);
+        const respmelhorArtista = await fetch(`/dash_user/melhor_artista/${idPerfil}`);
+        const respPost = await fetch(`/musica/postagens/${idPerfil}`);
+
+
+
+
+        var mensagem = "";
+
+        /* Parte de preecher elementos */
+
+        const quantidadePost = await respQtdPostagem.json();
+        const sentimento = await respSentimento.json();
+        const artistaFav = await respmelhorArtista.json();
+        const postagens = await respPost.json();
+
+
+        console.log(artistaFav)
+
+
+        nome_user.innerHTML = quantidadePost[0].Nome;
+        sentimento_usuario.innerHTML = sentimento[0].Sentimento;
+        imagem_perfil.src = `https://api.dicebear.com/8.x/initials/svg?seed=${quantidadePost[0].Nome}&backgroundColor=2c5c5c`;
+        Qtd_Post.innerHTML = quantidadePost[0].Quantidade;
+        artista_fav.innerHTML = artistaFav[0].Artista;
+
+        if (!postagens || postagens.length === 0) {
+            icone_dash.style.display = "none"
+            sem_postagem.style.display = "Flex"
+        } else {
+
+            postagens.forEach(element => {
+                mensagem += `
+                        <div class="cartao">
+                    <div class="esquerdo">
+                        <h1>Sentimento: <span>${element.Sentimento}</span></h1>
+                        <label>
+                            <h1><span>História:</span></h1>
+                            <div>
+                                <p>${element.Historia}
+                                </p>
+                            </div>
+                        </label>
+
+                        
+                    </div>
+
+                    <div class="direito">
+                        <div class="foto_nome">
+                            <img src="${element.Foto}">
+                            <h1>${element.Musica} - ${element.Artista}</h1>
+                        </div>
+
+                        <div class="inputs_musica">
+                            <audio id="audioPreview" controls>
+                                <source src="${element.Preview}" type="audio/mpeg">
+                                Seu navegador não suporta o elemento de áudio.
+                            </audio>
+
+                            <p>${element.Data}</p>
+                        </div>
+
+                    </div>
+
+                </div>
+                `;
+            });
+
+            div_postagens.innerHTML = mensagem;
+        }
+    }
+
+
+
+    buscarDados();
+
+</script>

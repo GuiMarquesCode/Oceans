@@ -12,6 +12,7 @@ function deletar(idUsuario) {
 function atualizar(nome,senha, idUsuario) {
     var instrucaoSql = `
         UPDATE Usuario SET Nome = '${nome}',Senha = '${senha}' WHERE idUsuario = ${idUsuario};
+
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
